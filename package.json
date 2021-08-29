@@ -1,6 +1,6 @@
 {
   "name": "jh-vue-admin",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A vue admin template with Element UI & axios & iconfont & permission control & lint",
   "author": "iotjin",
   "scripts": {

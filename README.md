@@ -1,6 +1,7 @@
 # jh-vue-admin
 
 - 基于[vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)项目`v4.0+` 版本
+- 添加[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)项目`TagsView`功能
 - [vue-element-admin 使用文档](https://panjiachen.github.io/vue-element-admin-site/zh/)
 
 ## vue-admin-template 介绍
@@ -14,6 +15,16 @@
 目前版本为 `v4.0+` 基于 `vue-cli` 进行构建，若你想使用旧版本，可以切换分支到[tag/3.11.0](https://github.com/PanJiaChen/vue-admin-template/tree/tag/3.11.0)，它不依赖 `vue-cli`。
 
 如果你想要根据用户角色来动态生成侧边栏和 router，你可以使用该分支[permission-control](https://github.com/PanJiaChen/vue-admin-template/tree/permission-control)
+
+## <a id="更新记录"></a> 更新记录
+<details open id="重要更新">
+  <summary><strong>重要更新</strong></summary>
+   
+```
+* v1.1.0版本，添加TagsView功能
+* v1.0.0版本，添加vue-admin-template模板项目
+```
+</details>
 
 ## Build Setup
 
