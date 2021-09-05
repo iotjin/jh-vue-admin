@@ -3,6 +3,7 @@
 - 基于[vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)项目`v4.0+` 版本
 - 添加[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)项目`TagsView`功能
 - [vue-element-admin 使用文档](https://panjiachen.github.io/vue-element-admin-site/zh/)
+- 动态权限控制
 
 ## vue-admin-template 介绍
 
@@ -21,10 +22,15 @@
   <summary><strong>重要更新</strong></summary>
    
 ```
+* v1.2.0版本，添加权限控制
 * v1.1.0版本，添加TagsView功能
 * v1.0.0版本，添加vue-admin-template模板项目
 ```
 </details>
+
+## 分支
+- `template`分支在`vue-admin-template`基础上添加了`TagsView`
+- `permission-template`分支在`permission-control`基础上添加了`TagsView`
 
 ## Build Setup
 
