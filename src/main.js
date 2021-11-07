@@ -4,7 +4,7 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import locale from 'element-ui/lib/locale/lang/en' // lang i18n
+// import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
 import '@/styles/index.scss' // global css
 
@@ -14,6 +14,9 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+
+// 引入全局常量
+import constant from '@/common/const'
 
 /**
  * If you don't want to use mock-server
@@ -29,11 +32,16 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // set ElementUI lang to EN
-Vue.use(ElementUI, { locale })
+// Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
-// Vue.use(ElementUI)
+Vue.use(ElementUI)
 
 Vue.config.productionTip = false
+
+Vue.prototype.pageGroup = { index: 1, size: 10, sizes: [10, 20, 50, 100] }// 表格分页变量
+
+// 引入全局常量
+Vue.use(constant)
 
 new Vue({
   el: '#app',

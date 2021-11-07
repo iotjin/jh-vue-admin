@@ -4,6 +4,9 @@
 @import './element-ui.scss';
 @import './sidebar.scss';
 
+@import './custom/global.css'; // 自定义
+@import './custom/style.scss'; // 自定义
+
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;

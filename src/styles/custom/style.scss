@@ -1,0 +1,784 @@
+$search_bg: #fff; //表格查询条件背景
+$search_label_width: 110px; //表格查询条件label 宽度
+$search_input_width: 210px; //表格查询条件input 宽度
+$search_input_bg: #f5f5f5; //查询框背景
+$search_input_borderColor: #dcdcdc; //查询框边框颜色
+
+$search_label_icon_bg: rgba(#409eff, 0.5); //表格查询条件 icon颜色
+
+$search_table_th_color: #000; //表格标题颜色
+$search_table_th_bg: #efefef; //表格标题颜色
+$search_table_borderColor: #dfe1e7;
+$search_table_color: #333333;
+
+//主题
+$theme_font_size: 15px;
+$theme_page_bg: #f5f5f5;
+$theme_color: #409eff;
+$theme_line_color: #4ea1f8;
+$theme_color_hover: #00ffc6;
+$theme_danger_color: #f56c6c;
+
+.spp-flex {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-bg {
+  background: yellow;
+}
+
+//子页面
+.spp-theme-body {
+  background: $theme_page_bg;
+  min-height: 100%;
+
+  .spp-theme-label {
+    background: $search_bg;
+    padding: 15px;
+    justify-content: flex-start;
+
+    > svg {
+      cursor: pointer;
+    }
+
+    .spp-theme-back {
+      display: inline-block;
+      margin-left: 10px;
+
+      > span {
+        display: inline-block;
+        height: 16px;
+        line-height: 16px;
+        border-left: 3px solid $theme_line_color;
+        color: $theme_line_color;
+        font-size: $theme_font_size;
+        padding-left: 5px;
+        cursor: pointer;
+
+        &:hover {
+          color: $theme_color;
+        }
+      }
+    }
+  }
+
+  //列表查询条件
+  .spp-form-search {
+    background: $search_bg;
+    padding-top: 15px;
+
+    .el-form-item__content {
+      display: flex;
+    }
+
+    .el-input {
+      width: $search_input_width;
+    }
+
+    .spp-form-minInput {
+      width: 130px;
+      margin-right: 10px;
+    }
+
+    .spp-form-minSelect {
+      .el-input {
+        width: 130px;
+        margin-right: 10px;
+      }
+    }
+
+    .el-range-editor--small .el-range-input {
+      background: $search_input_bg;
+    }
+
+    .spp-form-btns.left {
+      padding-left: 15px;
+    }
+
+    .spp-form-label {
+      width: $search_label_width;
+      font-size: $theme_font_size;
+      display: inline-block;
+      text-align: right;
+      padding-right: 12px;
+      margin-bottom: 10px;
+
+      > * {
+        vertical-align: middle;
+      }
+
+      .icon {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: $search_label_icon_bg;
+        display: inline-block;
+        margin-right: 5px;
+      }
+    }
+
+    .spp-form-btn {
+      background: linear-gradient(to right, #3bb0f6, #3b94ef);
+      width: 80px;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+
+      &:hover {
+        background: linear-gradient(to right, #3bb0f6 30%, #3bb0f6 60%);
+        transition: all 0.3s ease;
+      }
+    }
+
+    .spp-form-btn1 {
+      // background: linear-gradient(to right, #2f80ed, #56ccf2);
+      width: 80px;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+
+      &:hover {
+        // background: linear-gradient(to right, #2f80ed 20%, #56ccf2 80%);
+        transition: all 0.3s ease;
+      }
+    }
+  }
+
+  .spp-theme-top {
+    margin-top: 10px;
+  }
+
+  .spp-table-group {
+    background: $search_bg;
+
+    .spp-table-btns {
+      > button > span > i {
+        margin-right: 5px;
+      }
+
+      .btns-right {
+        float: right;
+        margin-top: 10px;
+        font-size: 12px;
+        color: #f56c6c;
+      }
+    }
+
+    .spp-table {
+      td {
+        padding: 5px 0;
+        color: $search_table_color;
+
+        .el-button--small,
+        .el-button--small.is-round {
+          padding-top: 5px;
+          padding-bottom: 5px;
+        }
+      }
+
+      border: 1px solid $search_table_borderColor;
+
+      .el-table__header {
+        th {
+          color: $search_table_th_color;
+          background: $search_table_th_bg;
+          border-bottom: 1px solid $search_table_borderColor;
+          padding: 8px 0;
+        }
+      }
+
+      .success-row {
+        background: rgba(239, 239, 239, 0.3);
+      }
+    }
+  }
+
+  .spp-table-group.bottoms {
+    margin-bottom: 50px;
+  }
+
+  .spp-but-btns {
+    position: fixed;
+    bottom: 0px;
+    right: 0;
+    left: 0;
+    background-color: #f5f5f5;
+    z-index: 99;
+    padding: 10px 0;
+    padding-left: 210px;
+    text-align: center;
+  }
+
+  .spp-dialog-info {
+    .title {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 10px;
+    }
+
+    .info-list {
+      justify-content: flex-start;
+      flex-wrap: wrap;
+
+      li {
+        margin-bottom: 15px;
+        margin-right: 5px;
+        width: 32%;
+
+        span {
+          text-align: right;
+        }
+
+        i {
+          font-weight: 400;
+          color: #2aa7e8;
+        }
+      }
+    }
+  }
+}
+
+.spp-theme-pad {
+  padding: 12px;
+}
+
+//弹框样式
+.spp-dialog {
+  .el-input {
+    width: $search_input_width;
+
+    .el-input__inner,
+    .el-textarea__inner {
+      background-color: $search_input_bg;
+      border-color: $search_input_borderColor;
+    }
+  }
+
+  .el-textarea {
+    width: $search_input_width;
+  }
+
+  .spp-dialog-btns {
+    display: block !important;
+    text-align: center;
+    margin-bottom: 0px;
+    margin-top: 0px;
+  }
+
+  .el-dialog__body {
+    padding: 20px 20px 10px;
+    min-height: 400px;
+    overflow: inherit;
+
+    > form {
+      margin-left: 55px;
+    }
+  }
+
+  .spp-dialog-body {
+    .spp-dialog-title {
+      font-size: 16px;
+      color: $theme_color;
+      margin-bottom: 10px;
+      padding: 10px 15px;
+
+      i {
+        width: 3px;
+        height: 16px;
+        background: $theme_color;
+        margin-right: 5px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  .spp-dialog-params {
+    .param-btn {
+      display: none;
+    }
+
+    .el-input {
+      width: 180px;
+    }
+
+    .params-items {
+      height: calc((100vh - 240px) / 2);
+      overflow: auto;
+    }
+
+    .param-item {
+      cursor: pointer;
+    }
+
+    .param-item:hover {
+      .param-btn {
+        display: inline-block;
+      }
+    }
+  }
+}
+
+.spp-big-dislog {
+  .el-dialog {
+    margin: 0px !important;
+    float: right;
+    height: 100%;
+
+    .el-dialog__body {
+      padding: 10px;
+      height: calc(100% - 97px);
+      max-height: inherit;
+    }
+
+    .spp-dialog-btns {
+      position: absolute;
+      bottom: 10px;
+      right: 50%;
+      padding: 0px;
+      margin-right: -37px;
+    }
+  }
+}
+
+.spp-fixed-dialog {
+  .el-dialog {
+    width: 800px;
+
+    .dialog-multiLine {
+      display: block;
+
+      .el-textarea {
+        width: 545px;
+      }
+    }
+  }
+}
+
+.preview-dialog {
+  .el-dialog__body {
+    padding: 0 20px 10px;
+    //max-height: 350px;
+    overflow: auto;
+  }
+
+  .preview-dialog-body {
+    .preview-dialog-title {
+      padding: 0 0 10px 0;
+      border-bottom: $theme_page_bg solid 1px;
+
+      > h1 {
+        color: $theme_color;
+        text-align: center;
+      }
+
+      > i {
+        margin-top: 10px;
+        display: block;
+        font-size: 16px;
+        text-align: right;
+      }
+    }
+
+    .preview-dialog-content {
+      padding: 10px 20px;
+
+      .preview-dialog-item {
+        margin-top: 40px;
+        display: inline-block;
+        width: calc(50% - 5px);
+      }
+
+      .full {
+        width: 100% !important;
+      }
+    }
+
+    .preview-enclosures {
+      padding: 10px 20px 0;
+
+      > span {
+        cursor: pointer;
+        color: $theme_color;
+        font-size: 14px;
+        display: block;
+      }
+    }
+  }
+}
+
+//覆盖element ui默认样式
+.el-input__inner,
+.el-textarea__inner {
+  background-color: $search_input_bg;
+  border-color: $search_input_borderColor;
+}
+
+.el-input.is-disabled .el-input__inner,
+.el-input.is-disabled .el-textarea__inner {
+  background-color: #e8e8e8;
+}
+
+// .spp-theme-fill{background: yellow;}
+.spp-form-display {
+  display: inline-block;
+}
+
+//登录页面样式
+$login_icon: #fff;
+.spp-login {
+  //   background: url(../assets/images/bg.jpg) no-repeat;
+  background-size: 100% 100%;
+  width: 100%;
+  height: 100%;
+
+  .spp-login-main {
+    width: 56%;
+    height: 560px;
+    // background: url(../assets/images/formBg.png) no-repeat;
+    background-size: 100% 100%;
+    margin: 0 auto;
+    position: relative;
+    top: 55%;
+    transform: translateY(-50%);
+
+    .spp-login-title {
+      text-align: center;
+      padding-top: 80px;
+    }
+
+    .spp-login-form {
+      width: 42%;
+      margin: 0 auto;
+
+      .el-form-item__content > * {
+        vertical-align: middle;
+      }
+
+      .el-input {
+        display: inline-block;
+        width: calc(100% - 48px);
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 6px;
+        border: 1.5px solid #fff;
+
+        .el-input__inner {
+          color: #878787;
+          font-size: 16px;
+          border: none !important;
+          background: none !important;
+        }
+
+        .show-pwd {
+          padding-right: 5px;
+          cursor: pointer;
+        }
+      }
+
+      .el-form-item__error {
+        margin-left: 50px !important;
+        color: #ce5454;
+      }
+
+      .sppfont {
+        color: $login_icon;
+        font-size: 22px;
+        padding-top: 5px;
+        display: inline-block;
+      }
+
+      .form-br {
+        color: $login_icon;
+        margin: 0 10px;
+        font-size: 22px;
+        font-weight: 500;
+      }
+
+      .form-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 50px;
+
+        .el-button {
+          background: linear-gradient(to right, #008d82, #02b1a5);
+        }
+      }
+    }
+  }
+}
+
+//可编辑树结构
+.spp-tree {
+  .el-tree {
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+
+    > .el-tree-node {
+      display: inline-block;
+      min-width: 100%;
+    }
+
+    .spp-tree-btns {
+      padding: 0 10px;
+      font-size: 12px;
+      visibility: hidden;
+
+      .item {
+        margin-right: 5px;
+        border: 1px solid red;
+      }
+
+      .item:hover {
+        opacity: 0.5;
+      }
+
+      .add {
+        color: $theme_color;
+        border-color: $theme_color;
+      }
+
+      .remove {
+        color: $theme_danger_color;
+        border-color: $theme_danger_color;
+      }
+    }
+
+    .el-tree-node__content:hover {
+      .spp-tree-btns {
+        visibility: visible;
+      }
+    }
+  }
+}
+
+//页面表单
+.spp-page-main {
+  overflow-y: auto;
+
+  .spp-page-form {
+    width: 70%;
+    padding-right: 50px;
+    padding-top: 30px;
+    margin: 0 auto;
+    max-width: 550px;
+
+    .dialog-multiLine {
+      display: block;
+    }
+
+    .el-select,
+    .el-input {
+      width: 100%;
+    }
+
+    .dialog-upload {
+      text-align: left;
+    }
+  }
+
+  .spp-dialog-btns {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .spp-page-noData {
+    span > img {
+      width: 200px;
+      margin-top: 10%;
+      opacity: 0.5;
+    }
+
+    text-align: center;
+  }
+}
+
+//页面列表
+.spp-theme-list {
+  .allMsg {
+    padding: 10px;
+    color: #999;
+    background: rgb(0, 117, 241, 0.1);
+    margin: 10px 0px;
+    font-size: 15px;
+    font-weight: 100;
+  }
+
+  .list {
+    > li {
+      padding: 10px;
+      border-bottom: 1px solid #e1e1e1;
+      justify-content: space-between;
+
+      .msg {
+        width: 50%;
+        padding-right: 15px;
+
+        .title {
+          font-size: 14px;
+          margin-bottom: 5px;
+        }
+      }
+
+      .number {
+        justify-content: space-between;
+        width: 50%;
+
+        > p {
+          > label {
+            display: inline-block;
+            width: 60px;
+            text-align: center;
+            color: $theme_color;
+          }
+        }
+      }
+    }
+
+    > li:last-child {
+      border-bottom: 0px;
+    }
+  }
+}
+
+//兼容1366小屏幕
+@media screen and (max-width: 1400px) {
+  .spp-login .spp-login-main {
+    width: 60%;
+    height: 460px;
+  }
+  .spp-login .spp-login-main .spp-login-title img {
+    margin-top: 40px;
+  }
+  .spp-menu-list > li > .item {
+    height: 280px !important;
+  }
+  .spp-menu-list > li > .item > p {
+    width: calc(100% + 10px) !important;
+    padding-left: 15px !important;
+  }
+  .spp-menu-list > li > .item > p > img {
+    margin-right: 6px !important;
+  }
+}
+
+/*滚动条样式*/
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-button {
+  height: 0;
+  width: 0;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(144, 147, 153, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  /*background: #94C1D8*/
+  background: rgba(144, 147, 153, 0.9);
+}
+
+//treeSelect  样式
+.treeselect-main {
+  display: inline-block;
+  width: 210px;
+  min-height: 32px;
+  line-height: 14px;
+
+  ::v-deep .vue-treeselect__placeholder {
+    line-height: 30px;
+  }
+
+  //最上层
+  ::v-deep .vue-treeselect__control {
+    height: 32px;
+    width: 210px;
+    background: #f5f5f5;
+  }
+
+  //上层
+  ::v-deep .vue-treeselect__value-container {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 30px;
+  }
+
+  //标签外层
+  ::v-deep .vue-treeselect__multi-value {
+    position: absolute;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: hidden;
+  }
+
+  //item
+  ::v-deep .vue-treeselect__multi-value-item {
+    display: inline-block !important;
+  }
+
+  ::v-deep .vue-treeselect__multi-value-label {
+    display: block;
+    white-space: nowrap;
+  }
+
+  //全部取消隐藏
+  ::v-deep .vue-treeselect__x-container {
+    display: none;
+  }
+
+  ::v-deep .vue-treeselect__icon {
+    display: none;
+  }
+}
+
+a {
+  color: #409eff;
+  text-decoration: underline;
+}
+
+.left-form-btns {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+  justify-content: center;
+
+  .footer-tool {
+    z-index: 999;
+    display: flex;
+    position: fixed;
+    bottom: 30px;
+    justify-content: center;
+  }
+}
+
+.footer-tool {
+  z-index: 999;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 30px;
+}
+
+textarea {
+  padding: 10px 12px;
+  background: #f5f5f5;
+  border-radius: 3px;
+  border: 1px solid #dcdcdc;
+  height: 120px;
+  resize: none;
+  color: #606266;
+  margin-top: 5px;
+}

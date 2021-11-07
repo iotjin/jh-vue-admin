@@ -6,6 +6,11 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
+/* Router Modules */
+// import componentsRouter from './modules/components'
+// import chartsRouter from './modules/charts'
+import tablesRouter from './modules/tables'
+
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -175,6 +180,10 @@ export const asyncRoutes = [
       }
     ]
   },
+  /** when your routing map is too long, you can split it into small modules **/
+  // componentsRouter,
+  // chartsRouter,
+  tablesRouter,
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
