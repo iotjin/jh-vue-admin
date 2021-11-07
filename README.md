@@ -22,6 +22,7 @@
   <summary><strong>重要更新</strong></summary>
    
 ```
+* v1.3.0版本，添加tagsView显隐控制
 * v1.2.0版本，添加权限控制
 * v1.1.0版本，添加TagsView功能
 * v1.0.0版本，添加vue-admin-template模板项目
