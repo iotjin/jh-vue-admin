@@ -9,6 +9,7 @@ import Layout from '@/layout'
 /* Router Modules */
 // import componentsRouter from './modules/components'
 // import chartsRouter from './modules/charts'
+import homesRouter from './modules/homes'
 import tablesRouter from './modules/tables'
 
 /**
@@ -183,6 +184,7 @@ export const asyncRoutes = [
   /** when your routing map is too long, you can split it into small modules **/
   // componentsRouter,
   // chartsRouter,
+  homesRouter,
   tablesRouter,
 
   // 404 page must be placed at the end !!!

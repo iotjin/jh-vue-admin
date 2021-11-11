@@ -16,7 +16,7 @@ const tableRouter = {
       path: 'table1',
       component: () => import('@/views/demos/tables/table1'),
       name: 'table1',
-      meta: { title: 'Table1' }
+      meta: { title: 'table1' }
     },
     {
       path: 'table2',
