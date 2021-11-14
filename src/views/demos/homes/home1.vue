@@ -46,7 +46,7 @@
     <el-row style="margin-top: 10px">
       <el-col :span="12">
         <div class="page-item page-chart" style="margin-right: 5px">
-          <span class="pageTitle" style="margin-top: 10px">发送报表专业统计</span>
+          <span class="pageTitle" style="margin-top: 10px">专业统计</span>
           <div  style="height:295px;">
             <ChartPie :options="staticOption"/>
           </div>
@@ -54,7 +54,7 @@
       </el-col>
       <el-col :span="12">
         <div class="page-item page-chart"  style="margin-left: 5px">
-          <span class="pageTitle" style="margin-top: 10px">阶段发送统计</span>
+          <span class="pageTitle" style="margin-top: 10px">阶段统计</span>
           <div  style="height:295px;">
             <ChartPie :options="stageOption"/>
           </div>
@@ -66,7 +66,7 @@
     <el-row style="margin-top: 10px">
       <el-col :span="12">
         <div class="page-item page-chart" style="margin-right: 5px">
-          <span class="pageTitle" style="margin-top: 10px">发送报表专业统计</span>
+          <span class="pageTitle" style="margin-top: 10px">专业统计</span>
           <div style="height:540px;">
             <ChartPie :options="staticOption" />
           </div>
@@ -83,7 +83,7 @@
         </el-row>
         <el-row :span="12">
           <div class="page-item page-chart" style="margin-left: 5px;margin-top: 25px">
-            <span class="pageTitle" style="margin-top: 10px">阶段发送统计</span>
+            <span class="pageTitle" style="margin-top: 10px">阶段统计</span>
             <div style="height:240px;">
               <ChartPie :options="stageOption" />
             </div>
@@ -167,7 +167,7 @@ export default {
           }
         ]
       },
-      // 发送报表专业统计
+      // 专业统计
       staticOption: {
         color: ['#1D75EA'],
         tooltip: {
@@ -218,7 +218,7 @@ export default {
           }
         ]
       },
-      // 阶段发送统计
+      // 阶段统计
       stageOption: {
         tooltip: {
           trigger: 'axis',
@@ -344,7 +344,7 @@ export default {
           { name: '设备专业', value: '150' }]
 
         var chartData1 = this.getChartXdataAndSeriesData(data1)
-        // 发送报表专业统计
+        // 专业统计
         that.staticOption.yAxis.data = chartData1.xData
         that.staticOption.series[0].data = chartData1.seriesData
 
@@ -360,7 +360,7 @@ export default {
           { name: '按月', value: '120' }]
 
         var chartData3 = this.getChartXdataAndSeriesData(data3)
-        // 阶段发送统计
+        // 阶段统计
         that.stageOption.yAxis.data = chartData3.xData.reverse()
         that.stageOption.series[0].data = chartData3.seriesData.reverse()
       }, 1000)

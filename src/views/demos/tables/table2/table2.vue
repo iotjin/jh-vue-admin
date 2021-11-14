@@ -40,7 +40,7 @@
         <el-button v-permission="{action:'menu-export'}" size="small" type="warning" @click="onExport"><i class="el-icon-download" />导出 </el-button>
         <el-button v-permission="{action:'menu-delete'}" size="small" type="danger" @click="onDelete"><i class="el-icon-delete" />删除 </el-button> -->
       </div>
-      <el-table v-loading="tableLoading" class="spp-table spp-theme-top" :data="tableData" :stripe="true" :header-cell-style="{textAlign: 'center'}" :cell-style="{textAlign: 'center'}" style="width: 100%" @selection-change="selectionLineChangeHandle">
+      <el-table ref="tableRef" v-loading="tableLoading" class="spp-table spp-theme-top" :data="tableData" :stripe="true" :header-cell-style="{textAlign: 'center'}" :cell-style="{textAlign: 'center'}" style="width: 100%" @selection-change="selectionLineChangeHandle">
         <el-table-column prop="number" type="index" label="序号" />
         <el-table-column type="selection" width="55" />
         <el-table-column prop="name1" label="操作人" width="100">
@@ -95,7 +95,7 @@
     </div>
 
     <!-- 新增 编辑弹框 -->
-    <Dialog1 :title="dialogTitle" :is-show="isShowDialog" :dialog-data="dialogForm" jump-page="table2页面" @success="requestList()" />
+    <Dialog1 :dialog-type="dialogType" :is-show.sync="isShowDialog" :dialog-data="dialogFormData" jump-page="table2页面" @success="requestList" @closed="onCloseDialog" />
 
   </div>
 </template>
@@ -127,10 +127,9 @@ export default {
       tableSizes: this.pageGroup.sizes, // 显示条数分组
       selectionList: [], // 勾选一行或多行数据
       // 弹框相关
-      dialogTitle: '',
+      dialogType: '',
       isShowDialog: false,
-      dialogIsLook: false,
-      dialogForm: {},
+      dialogFormData: {},
       // 字典项
       deptOptions: [],
       levelOptions: [],
@@ -214,7 +213,7 @@ export default {
     },
     // 操作按钮
     onAdd() {
-      this.dialogForm = {
+      this.dialogFormData = {
         name1: '',
         content: '',
         level: '',
@@ -226,8 +225,7 @@ export default {
         money: '',
         age: ''
       }
-      this.dialogTitle = '新增'
-      this.dialogIsLook = false
+      this.dialogType = 'add'
       this.isShowDialog = true
     },
     onLook() {
@@ -239,9 +237,8 @@ export default {
         return
       } else {
         this.selectId = this.selectionList[0].id
-        this.dialogTitle = '查看'
-        this.dialogIsLook = true
-        this.dialogForm = this.selectionList[0]
+        this.dialogType = 'look'
+        this.handelDialogSetData(this.selectionList[0])
         this.isShowDialog = true
       }
     },
@@ -254,9 +251,8 @@ export default {
         return
       } else {
         this.selectId = this.selectionList[0].id
-        this.dialogTitle = '编辑'
-        this.dialogIsLook = false
-        this.dialogForm = this.selectionList[0]
+        this.dialogType = 'edit'
+        this.handelDialogSetData(this.selectionList[0])
         this.isShowDialog = true
       }
     },
@@ -341,9 +337,8 @@ export default {
     onClickRow(row) {
       console.log(JSON.stringify(row))
       this.selectId = row.id
-      this.dialogTitle = '查看'
-      this.dialogIsLook = true
-      this.dialogForm = row
+      this.dialogType = 'look'
+      this.handelDialogSetData(row)
       this.isShowDialog = true
     },
     // 行内处理
@@ -352,9 +347,8 @@ export default {
       var that = this
       getDataById(row.id).then(res => {
         if (res.code === 20000) {
-          that.dialogTitle = '查看'
-          that.dialogIsLook = true
-          that.dialogForm = res.data
+          that.dialogType = 'look'
+          that.handelDialogSetData(res.data)
           that.isShowDialog = true
         } else {
           that.$message.error(res.msg)
@@ -367,9 +361,8 @@ export default {
     // 行编辑
     rowEdit(row) {
       console.log(JSON.stringify(row))
-      this.dialogTitle = '编辑'
-      this.dialogIsLook = false
-      this.dialogForm = row
+      this.dialogType = 'edit'
+      this.handelDialogSetData(row)
       this.isShowDialog = true
     },
     // 行删除
@@ -385,6 +378,18 @@ export default {
       }).catch((error) => {
         console.log(JSON.stringify(error))
       })
+    },
+    // 弹框相关
+    // 对弹框数据赋值
+    handelDialogSetData(data) {
+      var that = this
+      this.$nextTick(() => {
+        // that.dialogFormData = JSON.parse(JSON.stringify(data))
+        that.dialogFormData = { ...data }
+      })
+    },
+    onCloseDialog() {
+      this.$refs.tableRef.clearSelection()
     }
 
   }

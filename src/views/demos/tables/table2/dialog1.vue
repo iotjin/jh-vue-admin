@@ -1,52 +1,50 @@
 <template>
   <div>
     <!-- 新增 编辑弹框 -->
-    <!-- <el-dialog :title="dialogTitle" :visible.sync="dialogState.reportConfigDialog" top="8vh" width="70%" width="760px" @closed="onCloseEditLabelDialog()"> -->
-
-    <el-dialog :title="dialogTitle" :visible.sync="isShowDialog" :close-on-click-modal="false" @open="onOpenDialog" @closed="onCloseDialog">
+    <el-dialog :title="dialogTitle" :visible.sync="isShowDialog" top="8vh" width="60%" :close-on-click-modal="false" @opend="onOpenDialog" @closed="onCloseDialog">
       <div class="spp-dialog">
-        <el-form ref="dialogForm" :model="dialogForm" :inline="true" :rules="dialogRules" label-width="120px" size="small" :disabled="dialogIsLook">
+        <el-form ref="dialogFormRef" :model="dialogFormData" :inline="true" :rules="dialogRules" label-width="120px" size="small" :disabled="dialogIsLook">
           <el-form-item label="操作人:" prop="name1">
-            <el-input v-model="dialogForm.name1" placeholder="请输入" clearable />
+            <el-input v-model="dialogFormData.name1" placeholder="请输入" clearable />
           </el-form-item>
           <el-form-item label="级别:" prop="level">
-            <el-select v-model="dialogForm.level" placeholder="请选择" collapse-tags clearable>
+            <el-select v-model="dialogFormData.level" placeholder="请选择" collapse-tags clearable>
               <el-option v-for="item in levelOptions" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
           <el-form-item label="手机号:" prop="phone">
-            <el-input v-model="dialogForm.phone" placeholder="请输入" clearable />
+            <el-input v-model="dialogFormData.phone" placeholder="请输入" clearable />
           </el-form-item>
           <el-form-item label="金额:" prop="money">
-            <el-input v-model="dialogForm.money" placeholder="请输入" clearable />
+            <el-input v-model="dialogFormData.money" placeholder="请输入" clearable />
           </el-form-item>
           <el-form-item label="年龄:" prop="age">
-            <el-input v-model="dialogForm.age" placeholder="请输入" clearable />
+            <el-input v-model="dialogFormData.age" placeholder="请输入" clearable />
           </el-form-item>
           <el-form-item label="创建时间:" prop="createDate">
-            <el-date-picker v-model="dialogForm.createDate" type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm:ss" />
+            <el-date-picker v-model="dialogFormData.createDate" type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm:ss" />
           </el-form-item>
           <el-form-item label="更新时间:" prop="updateDate">
-            <el-date-picker v-model="dialogForm.updateDate" type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm:ss" />
+            <el-date-picker v-model="dialogFormData.updateDate" type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm:ss" />
           </el-form-item>
           <el-form-item label="处理状态:" prop="status">
-            <el-select v-model="dialogForm.status" placeholder="请选择" collapse-tags clearable>
+            <el-select v-model="dialogFormData.status" placeholder="请选择" collapse-tags clearable>
               <el-option label="未处理" value="0" />
               <el-option label="已处理" value="1" />
             </el-select>
           </el-form-item>
           <el-form-item label="内容:" prop="content">
-            <el-input v-model="dialogForm.content" placeholder="请输入" type="textarea" clearable />
+            <el-input v-model="dialogFormData.content" placeholder="请输入" type="textarea" clearable />
           </el-form-item>
           <el-form-item label="启用:" prop="isUse">
-            <el-radio-group v-model="dialogForm.isUse">
+            <el-radio-group v-model="dialogFormData.isUse">
               <el-radio label="1">启用</el-radio>
               <el-radio label="0">停用</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
         <div v-if="!dialogIsLook" slot="footer" class="dialog-footer spp-dialog-btns">
-          <el-button :loading="dialogSubmitBtnLoading" type="primary" size="small" @click="onDialogSubmit(dialogForm)">保存
+          <el-button :loading="dialogSubmitBtnLoading" type="primary" size="small" @click="onDialogSubmit(dialogFormData)">保存
           </el-button>
           <el-button size="small" @click="isShowDialog = false">取消</el-button>
         </div>
@@ -68,12 +66,13 @@ export default {
   props: {
     // 是否显示
     isShow: { type: Boolean, default: false },
-    title: { type: String, default: '提交' },
+    // 标题：新增、编辑、查看
+    title: { type: String, default: '提示' },
     // 传参
     dialogData: { type: Object, default: () => ({}) },
-    // add，edit，view
+    // add，edit，look
     dialogType: { type: String, default: 'add' },
-    // 跳转页面：配电新增，电力线路新增，配电详情，电力线路详情
+    // 跳转页面：新增1，新增2，详情1，详情2
     jumpPage: { type: String, default: '' }
   },
   data() {
@@ -84,7 +83,7 @@ export default {
       isShowDialog: false,
       dialogSubmitBtnLoading: false,
       dialogIsLook: false,
-      dialogForm: {
+      dialogFormData: {
         name1: '',
         content: '',
         level: '',
@@ -132,11 +131,16 @@ export default {
     isShowDialog: function(val) {
       this.showDialog(val)
     },
-    dialogData: function(val) {
-      this.dialogForm = val
-    },
     title: function(val) {
       this.dialogTitle = val
+      this.dialogIsLook = val === '查看'
+    },
+    dialogData: function(val) {
+      this.dialogFormData = val
+    },
+    dialogType: function(val) {
+      this.dialogTitle = val === 'add' ? '新增' : (val === 'edit' ? '编辑' : (val === 'look' ? '查看' : '提示'))
+      this.dialogIsLook = val === 'look'
     }
   },
   mounted() {
@@ -177,11 +181,12 @@ export default {
     },
     onCloseDialog() {
       if (!this.dialogIsLook) {
-        this.$refs['dialogForm'].resetFields() // 仅清除验证
+        this.$refs['dialogFormRef'].resetFields() // 仅清除验证
       }
+      this.$emit('closed', {}) // 传出选择对象
     },
     onDialogSubmit() {
-      this.$refs['dialogForm'].validate((valid) => {
+      this.$refs['dialogFormRef'].validate((valid) => {
         if (valid) {
           this.submitRequest()
         }
@@ -192,7 +197,7 @@ export default {
       this.dialogSubmitBtnLoading = true
 
       var params = {}
-      params = this.dialogForm
+      params = this.dialogFormData
       console.log(JSON.stringify(params))
 
       if (this.dialogTitle === '新增') {

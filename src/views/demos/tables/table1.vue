@@ -15,6 +15,10 @@
         <el-select v-model="tableSearchParams.level" placeholder="请选择" collapse-tags clearable>
           <el-option v-for="item in levelOptions" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
+        <!-- <el-select v-model="tableSearchParams.level" placeholder="请选择" clearable>
+          <el-option label="一级" value="1" />
+          <el-option label="二级" value="2" />
+        </el-select> -->
       </el-form-item>
       <el-form-item>
         <span class="spp-form-label" style="width: 150px">
@@ -40,7 +44,7 @@
         <el-button v-permission="{action:'menu-export'}" size="small" type="warning" @click="onExport"><i class="el-icon-download" />导出 </el-button>
         <el-button v-permission="{action:'menu-delete'}" size="small" type="danger" @click="onDelete"><i class="el-icon-delete" />删除 </el-button> -->
       </div>
-      <el-table v-loading="tableLoading" class="spp-table spp-theme-top" :data="tableData" :stripe="true" :header-cell-style="{textAlign: 'center'}" :cell-style="{textAlign: 'center'}" style="width: 100%" @selection-change="selectionLineChangeHandle">
+      <el-table ref="tableRef" v-loading="tableLoading" class="spp-table spp-theme-top" :data="tableData" :stripe="true" :header-cell-style="{textAlign: 'center'}" :cell-style="{textAlign: 'center'}" style="width: 100%" @selection-change="selectionLineChangeHandle">
         <el-table-column prop="number" type="index" label="序号" />
         <el-table-column type="selection" width="55" />
         <el-table-column prop="name1" label="操作人" width="100">
@@ -95,50 +99,50 @@
     </div>
 
     <!-- 新增 编辑弹框 -->
-    <el-dialog :title="dialogTitle" :visible.sync="isShowDialog" width="760px" :close-on-click-modal="false" @open="onOpenDialog" @closed="onCloseDialog">
+    <el-dialog :title="dialogTitle" :visible.sync="isShowDialog" top="8vh" width="760px" :close-on-click-modal="false" @opened="onOpenDialog" @closed="onCloseDialog">
       <div class="spp-dialog">
-        <el-form ref="dialogForm" :model="dialogForm" :inline="true" :rules="dialogRules" label-width="120px" size="small" :disabled="dialogIsLook">
+        <el-form ref="dialogFormRef" :model="dialogFormData" :inline="true" :rules="dialogRules" label-width="120px" size="small" :disabled="dialogIsLook">
           <el-form-item label="操作人:" prop="name1">
-            <el-input v-model="dialogForm.name1" placeholder="请输入" clearable />
+            <el-input v-model="dialogFormData.name1" placeholder="请输入" clearable />
           </el-form-item>
           <el-form-item label="级别:" prop="level">
-            <el-select v-model="dialogForm.level" placeholder="请选择" collapse-tags clearable>
+            <el-select v-model="dialogFormData.level" placeholder="请选择" collapse-tags clearable>
               <el-option v-for="item in levelOptions" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
           <el-form-item label="手机号:" prop="phone">
-            <el-input v-model="dialogForm.phone" placeholder="请输入" clearable />
+            <el-input v-model="dialogFormData.phone" placeholder="请输入" clearable />
           </el-form-item>
           <el-form-item label="金额:" prop="money">
-            <el-input v-model="dialogForm.money" placeholder="请输入" clearable />
+            <el-input v-model="dialogFormData.money" placeholder="请输入" clearable />
           </el-form-item>
           <el-form-item label="年龄:" prop="age">
-            <el-input v-model="dialogForm.age" placeholder="请输入" clearable />
+            <el-input v-model="dialogFormData.age" placeholder="请输入" clearable />
           </el-form-item>
           <el-form-item label="创建时间:" prop="createDate">
-            <el-date-picker v-model="dialogForm.createDate" type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm:ss" />
+            <el-date-picker v-model="dialogFormData.createDate" type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm:ss" />
           </el-form-item>
           <el-form-item label="更新时间:" prop="updateDate">
-            <el-date-picker v-model="dialogForm.updateDate" type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm:ss" />
+            <el-date-picker v-model="dialogFormData.updateDate" type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm:ss" />
           </el-form-item>
           <el-form-item label="处理状态:" prop="status">
-            <el-select v-model="dialogForm.status" placeholder="请选择" collapse-tags clearable>
+            <el-select v-model="dialogFormData.status" placeholder="请选择" collapse-tags clearable>
               <el-option label="未处理" value="0" />
               <el-option label="已处理" value="1" />
             </el-select>
           </el-form-item>
           <el-form-item label="内容:" prop="content">
-            <el-input v-model="dialogForm.content" placeholder="请输入" type="textarea" clearable />
+            <el-input v-model="dialogFormData.content" placeholder="请输入" type="textarea" clearable />
           </el-form-item>
           <el-form-item label="启用:" prop="isUse">
-            <el-radio-group v-model="dialogForm.isUse">
+            <el-radio-group v-model="dialogFormData.isUse">
               <el-radio label="1">启用</el-radio>
               <el-radio label="0">停用</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
         <div v-if="!dialogIsLook" slot="footer" class="dialog-footer spp-dialog-btns">
-          <el-button :loading="dialogSubmitBtnLoading" type="primary" size="small" @click="onDialogSubmit(dialogForm)">保存
+          <el-button :loading="dialogSubmitBtnLoading" type="primary" size="small" @click="onDialogSubmit()">保存
           </el-button>
           <el-button size="small" @click="isShowDialog = false">取消</el-button>
         </div>
@@ -183,7 +187,7 @@ export default {
       isShowDialog: false,
       dialogSubmitBtnLoading: false,
       dialogIsLook: false,
-      dialogForm: {
+      dialogFormData: {
         name1: '',
         content: '',
         level: '',
@@ -302,7 +306,7 @@ export default {
     },
     // 操作按钮
     onAdd() {
-      this.dialogForm = {
+      this.dialogFormData = {
         name1: '',
         content: '',
         level: '',
@@ -328,8 +332,7 @@ export default {
       } else {
         this.selectId = this.selectionList[0].id
         this.dialogTitle = '查看'
-        this.dialogIsLook = true
-        this.dialogForm = this.selectionList[0]
+        this.handelDialogSetData(this.selectionList[0])
         this.isShowDialog = true
       }
     },
@@ -344,7 +347,7 @@ export default {
         this.selectId = this.selectionList[0].id
         this.dialogTitle = '编辑'
         this.dialogIsLook = false
-        this.dialogForm = this.selectionList[0]
+        this.handelDialogSetData(this.selectionList[0])
         this.isShowDialog = true
       }
     },
@@ -416,7 +419,7 @@ export default {
       this.selectId = row.id
       this.dialogTitle = '查看'
       this.dialogIsLook = true
-      this.dialogForm = row
+      this.handelDialogSetData(row)
       this.isShowDialog = true
     },
     // 行内处理
@@ -427,7 +430,7 @@ export default {
         if (res.code === 20000) {
           that.dialogTitle = '查看'
           that.dialogIsLook = true
-          that.dialogForm = res.data
+          that.handelDialogSetData(res.data)
           that.isShowDialog = true
         } else {
           that.$message.error(res.msg)
@@ -442,7 +445,7 @@ export default {
       console.log(JSON.stringify(row))
       this.dialogTitle = '编辑'
       this.dialogIsLook = false
-      this.dialogForm = row
+      this.handelDialogSetData(row)
       this.isShowDialog = true
     },
     // 行删除
@@ -459,18 +462,26 @@ export default {
         console.log(JSON.stringify(error))
       })
     },
-
+    // 对弹框数据赋值
+    handelDialogSetData(data) {
+      var that = this
+      this.$nextTick(() => {
+        // that.dialogFormData = JSON.parse(JSON.stringify(data))
+        that.dialogFormData = { ...data }
+      })
+    },
     // 弹框相关
     onOpenDialog() {
 
     },
     onCloseDialog() {
+      this.$refs.tableRef.clearSelection()
       if (!this.dialogIsLook) {
-        this.$refs['dialogForm'].resetFields() // 仅清除验证
+        this.$refs['dialogFormRef'].resetFields() // 仅清除验证
       }
     },
     onDialogSubmit() {
-      this.$refs['dialogForm'].validate((valid) => {
+      this.$refs['dialogFormRef'].validate((valid) => {
         if (valid) {
           this.submitRequest()
         }
@@ -496,7 +507,7 @@ export default {
       this.dialogSubmitBtnLoading = true
 
       var params = {}
-      params = this.dialogForm
+      params = this.dialogFormData
       console.log(JSON.stringify(params))
 
       if (this.dialogTitle === '新增') {
