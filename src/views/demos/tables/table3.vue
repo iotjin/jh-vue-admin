@@ -38,55 +38,65 @@
         <el-button size="small" type="primary" @click="onAdd"><i class="el-icon-plus" />新增 </el-button>
         <el-button size="small" type="danger" @click="onDelete"><i class="el-icon-delete" />删除 </el-button>
       </div>
-      <el-form ref="tableFormRef" :model="tableForm" label-width="120px" :inline="true" :rules="tableRules" size="small">
-        <el-table v-loading="tableLoading" class="spp-table spp-theme-top" :data="tableForm.tableData" :stripe="true" :header-cell-style="{textAlign: 'center'}" :cell-style="{textAlign: 'center',}" style="width: 100%" :row-class-name="rowClassName" @selection-change="selectionLineChangeHandle">
-          <el-table-column prop="xh" type="index" label="序号" />
-          <!-- <el-table-column prop="createDate">
+      <el-form ref="formRef" :model="tableForm" label-width="120px" :inline="true" :rules="formRules" size="small" label-position="center">
+        <!-- class="spp-table spp-theme-top my-table -->
+        <el-table ref="tableRef" v-loading="tableLoading" class="my-table" :data="tableForm.tableData" :stripe="true" :header-cell-style="headerCellStyle" :cell-style="cellStyle" :row-class-name="rowClassName" border @selection-change="selectionLineChangeHandle">
+          <el-table-column label="">
+            <el-table-column prop="xh" type="index" label="序号" width="80px" />
+            <!-- <el-table-column prop="createDate">
             <template slot="header"> <span style="color:red;padding-right:3px">*</span><span>测试header红星</span> </template>
           </el-table-column> -->
-          <el-table-column type="selection" width="55px" />
-          <el-table-column label="名称" :render-header="addRedStar" width="200px">
-            <template slot-scope="scope">
-              <el-form-item :prop="`tableData.${scope.$index}.name`" :rules="tableRules.name">
-                <el-input v-model="scope.row.name" maxlength="20" placeholder="请输入" clearable />
-              </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column label="时间" :render-header="addRedStar" width="260px">
-            <template slot-scope="scope">
-              <el-form-item :prop="`tableData.${scope.$index}.createDate`" :rules="tableRules.createDate">
-                <el-date-picker v-model="scope.row.createDate" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm" placeholder="选择日期" />
-              </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column label="部门" :render-header="addRedStar" width="200px">
-            <template slot-scope="scope">
-              <el-form-item :prop="`tableData.${scope.$index}.dept`" :rules="tableRules.dept">
-                <el-select v-model="scope.row.dept" placeholder="请选择" collapse-tags clearable>
-                  <el-option v-for="item in deptOptions" :key="item.value" :label="item.label" :value="item.value" />
-                </el-select>
-              </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column label="操作人" :render-header="addRedStar" width="200px">
-            <template slot-scope="scope">
-              <el-form-item :prop="`tableData.${scope.$index}.operator`" :rules="tableRules.operator">
-                <el-input v-model="scope.row.operator" maxlength="10" placeholder="请输入" clearable />
-              </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column label="操作时间" :render-header="addRedStar" width="260px">
-            <template slot-scope="scope">
-              <el-form-item :prop="`tableData.${scope.$index}.updateDate`" :rules="tableRules.updateDate">
-                <el-date-picker v-model="scope.row.updateDate" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm" placeholder="选择日期" />
-              </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column fixed="right" label="操作" width="120px">
-            <template slot-scope="scope">
-              <el-button size="mini" icon="el-icon-edit-outline" @click="rowEdit(scope.row)" />
-              <el-button size="mini" icon="el-icon-delete" type="danger" @click="rowDelete(scope.row)" />
-            </template>
+            <el-table-column type="selection" width="55px" />
+            <el-table-column label="名称" :render-header="addRedStar" min-width="260">
+              <template slot-scope="scope">
+                <el-form-item :prop="`tableData.${scope.$index}.name`" :rules="formRules.name">
+                  <el-input v-model="scope.row.name" maxlength="20" placeholder="请输入" clearable />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="部门" :render-header="addRedStar" min-width="260">
+              <template slot-scope="scope">
+                <el-form-item :prop="`tableData.${scope.$index}.dept`" :rules="formRules.dept">
+                  <el-select v-model="scope.row.dept" placeholder="请选择" collapse-tags clearable>
+                    <el-option v-for="item in deptOptions" :key="item.value" :label="item.label" :value="item.value" />
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作人" :render-header="addRedStar" min-width="260">
+              <template slot-scope="scope">
+                <el-form-item :prop="`tableData.${scope.$index}.operator`" :rules="formRules.operator">
+                  <el-input v-model="scope.row.operator" maxlength="10" placeholder="请输入" clearable />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="内容" :render-header="addRedStar" min-width="260">
+              <template slot-scope="scope">
+                <el-form-item :prop="`tableData.${scope.$index}.content`" :rules="formRules.content">
+                  <el-input v-model="scope.row.content" maxlength="100" placeholder="请输入" type="textarea" :autosize="{ minRows: 2, maxRows: 2}" clearable />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="创建时间" :render-header="addRedStar" width="260">
+              <template slot-scope="scope">
+                <el-form-item :prop="`tableData.${scope.$index}.createDate`" :rules="formRules.createDate">
+                  <el-date-picker v-model="scope.row.createDate" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm" placeholder="选择日期" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作时间" :render-header="addRedStar" width="260">
+              <template slot-scope="scope">
+                <el-form-item :prop="`tableData.${scope.$index}.updateDate`" :rules="formRules.updateDate">
+                  <el-date-picker v-model="scope.row.updateDate" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm" placeholder="选择日期" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column fixed="right" label="操作" width="120px">
+              <template slot-scope="scope">
+                <el-button size="mini" icon="el-icon-edit-outline" @click="rowEdit(scope.row)" />
+                <el-button size="mini" icon="el-icon-delete" type="danger" @click="rowDelete(scope.row)" />
+              </template>
+            </el-table-column>
           </el-table-column>
         </el-table>
       </el-form>
@@ -101,12 +111,43 @@
   </div>
 </template>
 <script>
+import TimeUtils from '@/utils/timeUtils'
 // import { getDeptList } from '@/api/base/base'
 // import { getListData, editData, getDataById, exportById } from '@/api/table/table'
 export default {
   components: {
   },
   data() {
+    var validate1 = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('请选择创建时间'))
+      } else {
+        const index = rule.field.substr(10, 1) // tableData.0.createDate
+        const isBool = TimeUtils.Jh_compareTimes(value, this.tableForm.tableData[index].updateDate)
+        if (isBool) {
+          callback(new Error('创建时间不能大于操作时间!'))
+        }
+        // const startTime = TimeUtils.Jh_timeStampToTime(new Date().getTime(), '{y}-{m}-{d} {h}:{i}:{s}') // 当前时间
+        // const endTime = TimeUtils.Jh_timeStampToTime(new Date().getTime() + 1000 * 60 * 60 * 24 * 1, '{y}-{m}-{d} {h}:{i}:{s}') // 一天后
+        // const isBool2 = TimeUtils.Jh_isBetweenTimes(value, startTime, endTime)
+        // if (!isBool2) {
+        //   callback(new Error('创建时间必须在开始时间和结束时间内!'))
+        // }
+        callback()
+      }
+    }
+    var validate2 = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('请选择操作时间'))
+      } else {
+        const index = rule.field.substr(10, 1)
+        const isBool = TimeUtils.Jh_compareTimes(value, this.tableForm.tableData[index].createDate)
+        if (!isBool) {
+          callback(new Error('操作时间不能小于创建时间!'))
+        }
+        callback()
+      }
+    }
     return {
       tableHeight: 170,
       tableLoading: false,
@@ -121,19 +162,24 @@ export default {
       tableSizes: this.pageGroup.sizes, // 显示条数分组
       tableForm: {
         tableData: []
+        // tableData: [{
+        //   'name': '',
+        //   'dept': '',
+        //   'operator': '',
+        //   'content': '',
+        //   'createDate': '',
+        //   'updateDate': ''
+        // }]
       },
-      tableRules: {
+      formRules: {
+        name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
         dept: [{ required: true, message: '请选择部门', trigger: 'change' }],
-        createDate: [{ required: true, message: '请选择时间', trigger: 'change' }],
-        updateDate: [{ required: true, message: '请选择操作时间', trigger: 'change' }],
-        name: [
-          { required: true, message: '请输入名称', trigger: 'blur' },
-          { min: 1, max: 32, message: '长度在 1 到 32 个字符', trigger: 'blur' }
-        ],
-        operator: [
-          { required: true, message: '请输入操作人名称', trigger: 'blur' },
-          { min: 1, max: 32, message: '长度在 1 到 32 个字符', trigger: 'blur' }
-        ]
+        operator: [{ required: true, message: '请输入操作人名称', trigger: 'blur' }],
+        content: [{ required: true, message: '请输入内容', trigger: 'blur' }],
+        createDate: [{ validator: validate1, trigger: 'change' }],
+        updateDate: [{ validator: validate2, trigger: 'change' }]
+        // createDate: [{ required: true, message: '请选择创建时间', trigger: 'change' }],
+        // updateDate: [{ required: true, message: '请选择操作时间', trigger: 'change' }]
       },
       selectionList: [], // 勾选一行或多行数据
       // 字典项
@@ -167,13 +213,15 @@ export default {
       // });
       const tempArr = []
       for (let index = 0; index < 2; index++) {
+        var id = index + 1
         tempArr.push({
-          'id': index,
-          dept: 'dept' + (index + 1),
-          'name': '名称' + index,
-          'createDate': '2021-08-17 09:00:00',
-          'operator': '操作人',
-          'updateDate': '2021-08-17 09:00:00'
+          'id': id,
+          'name': '名称' + id,
+          'dept': 'dept' + id,
+          'operator': '操作人' + id,
+          'content': '内容' + id,
+          'createDate': TimeUtils.Jh_timeStampToTime(new Date().getTime(), '{y}-{m}-{d} {h}:{i}:{s}'),
+          'updateDate': TimeUtils.Jh_timeStampToTime(new Date().getTime() + 1000 * 3600 * 24, '{y}-{m}-{d} {h}:{i}:{s}')
         })
       }
       this.tableForm.tableData = tempArr
@@ -200,6 +248,21 @@ export default {
         'sort': 1
       }]
     },
+    // 设置表头样式
+    headerCellStyle({ row, column, rowIndex, columnIndex }) {
+      // return { textAlign: 'center' }
+      //
+      if (rowIndex === 0 && columnIndex === 0) {
+        // 隐藏头部
+        return { textAlign: 'center', background: '#eef1f6', display: 'none' }
+      } else {
+        return { textAlign: 'center', background: '#f5f5f5' }
+      }
+    },
+    // 设置表内容样式
+    cellStyle({ row, column, rowIndex, columnIndex }) {
+      return { textAlign: 'center' }
+    },
     // 其中row是行对象，rowindex是行号，从0开始。所以这样就能实现了序号(xh属性)递增并且取值为行号加1。
     rowClassName({ row, rowIndex }) {
       row.xh = rowIndex + 1
@@ -213,16 +276,6 @@ export default {
     addRedStar(h, { column }) { // 给表头加必选标识
       return [h('span', { style: 'color: red' }, '*'), h('span', ' ' + column.label)]
     },
-    // 页容量改变时会触发
-    handleSizeChange(size) {
-      this.tableSearchParams.limit = size
-      this.requestList()
-    },
-    // 当前页改变时会触发
-    handleCurrentChange(currentPage) {
-      this.tableSearchParams.page = currentPage
-      this.requestList()
-    },
     selectionLineChangeHandle(val) {
       this.selectionList = val
     },
@@ -231,8 +284,9 @@ export default {
         'id': '',
         'name': '',
         'dept': '',
-        'createDate': '',
         'operator': '',
+        'content': '',
+        'createDate': '',
         'updateDate': ''
       }
       this.tableForm.tableData.push(item)
@@ -296,15 +350,15 @@ export default {
       })
     },
     onClickReset() {
-      this.$refs['tableFormRef'].resetFields()
+      this.$refs['formRef'].resetFields()
     },
     onClickSave() {
-      this.$refs['tableFormRef'].validate((valid) => {
+      this.$refs['formRef'].validate((valid) => {
         if (valid) {
           console.log(JSON.stringify(this.tableForm))
         } else {
           console.log('error submit!!')
-          return false
+          this.$message.warning('有未输入项')
         }
       })
     }
@@ -314,6 +368,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.my-table {
+  margin-top: 10px;
+}
+
 .el-form-item {
   padding: 10px;
   margin-bottom: 0px;

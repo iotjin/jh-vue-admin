@@ -5,12 +5,15 @@ module.exports = {
   Jh_convertTimeStamp,
   Jh_timestampToYMD,
   Jh_isToday,
-  Jh_isBetweenTimes,
   Jh_getYearMonth,
   Jh_getPrevYear,
   Jh_getNextYear,
   Jh_getPrevYearMonth,
   Jh_getNextYearMonth,
+  Jh_compareTimes,
+  Jh_isBetweenTimes,
+  Jh_isBetweenTimesByCurrent,
+  Jh_isBetweenTimesByCurrentAndEndTime,
   getEndTime,
   startOfDay,
   endOfDay
@@ -116,19 +119,6 @@ function Jh_isToday(time) {
   return newTime === currentTime
 }
 
-// 判断当前时间是否在某个时间段内  time格式：2020-07-19 20:33:00
-function Jh_isBetweenTimes(beginTime, endTime) {
-  beginTime = beginTime.replace(/-/g, '/')
-  endTime = endTime.replace(/-/g, '/')
-  beginTime = new Date(beginTime)
-  endTime = new Date(endTime)
-  const currentTime = new Date()
-  if (beginTime <= currentTime && currentTime <= endTime) {
-    return true
-  }
-  return false
-}
-
 // 获取当前年月  time格式：2020-07
 function Jh_getYearMonth() {
   const timestamp = Date.parse(new Date())
@@ -229,31 +219,102 @@ function getEndTime(time) {
   var day = Math.floor(leftsecond / (60 * 60 * 24))
   var hour = Math.floor((leftsecond - day * 24 * 60 * 60) / 3600)
   var minute = Math.floor((leftsecond - day * 24 * 60 * 60 - hour * 3600) / 60)
-  var second = Math.floor(leftsecond - day * 60 * 60 * 24 - hour * 60 * 60 - minute * 60)
+  var second = Math.floor(
+    leftsecond - day * 60 * 60 * 24 - hour * 60 * 60 - minute * 60
+  )
   return `距离${year}年${month}月${date}日还有${day}天${hour}小时${minute}分${second}秒`
 }
 
 /**
-   * 获取当前日期0点(iso格式)
-   * @returns {string}
-   */
+ * 获取当前日期0点(iso格式)
+ * @returns {string}
+ */
 function startOfDay(isoDateStr) {
   if (!isoDateStr) return ''
   return isoDateStr.substr(0, 10) + ' 00:00:00'
 }
 
 /**
-   * 获取当前日期的午夜(iso格式)
-   * @returns {string}
-   */
+ * 获取当前日期的午夜(iso格式)
+ * @returns {string}
+ */
 function endOfDay(isoDateStr) {
   if (!isoDateStr) return ''
   return isoDateStr.substr(0, 10) + ' 23:59:59'
 }
 
+/**
+ * 判断某个时间是否在开始时间和结束时间范围内
+ * @param time 2020-07-19 20:33:00 | 2020/07/19 20:33:00
+ * @return true | false
+ */
+function Jh_isBetweenTimes(time, startTime, endTime) {
+  time = time.replace(/-/g, '/')
+  startTime = startTime.replace(/-/g, '/')
+  endTime = endTime.replace(/-/g, '/')
+  time = new Date(time)
+  startTime = new Date(startTime)
+  endTime = new Date(endTime)
+  if (startTime <= time && time <= endTime) {
+    return true
+  }
+  return false
+}
+
+/**
+ * 判断当前时间是否在某个时间段内
+ * @param time 2020-07-19 20:33:00 | 2020/07/19 20:33:00
+ * @return true | false
+ */
+function Jh_isBetweenTimesByCurrent(beginTime, endTime) {
+  beginTime = beginTime.replace(/-/g, '/')
+  endTime = endTime.replace(/-/g, '/')
+  beginTime = new Date(beginTime)
+  endTime = new Date(endTime)
+  const currentTime = new Date()
+  if (beginTime <= currentTime && currentTime <= endTime) {
+    return true
+  }
+  return false
+}
+
+/**
+ * 判断某个时间是否在当前时间和结束时间范围内
+ * @param time 2020-07-19 20:33:00 | 2020/07/19 20:33:00
+ * @return true | false
+ */
+function Jh_isBetweenTimesByCurrentAndEndTime(time, endTime) {
+  const currentTime = new Date()
+  time = time.replace(/-/g, '/')
+  endTime = endTime.replace(/-/g, '/')
+  time = new Date(time)
+  endTime = new Date(endTime)
+  if (currentTime <= time && time <= endTime) {
+    return true
+  }
+  return false
+}
+
+/**
+ * 比较两个时间大小
+ * @param time1 2019-02-02 || 2019-02-02 00:00:00
+ * @param time2 2019-02-02 || 2019-02-02 00:00:00
+ * @return time1>time2 为true
+ */
+function Jh_compareTimes(time1, time2) {
+  const newTime1 = Jh_convertTimeStamp(time1)
+  const newTime2 = Jh_convertTimeStamp(time2)
+  if (newTime1 > newTime2) {
+    return true // 第一个大
+  } else {
+    return false // 第二个大
+  }
+}
+
 /*
   使用方法：
 
+  import TimeUtils from '@/utils/timeUtils'
   const TimeUtils = require('@utils/timeUtils');
   const TimeUtils = require('../../utils/timeUtils.js');
 
