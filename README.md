@@ -5,6 +5,10 @@
 - [vue-element-admin 使用文档](https://panjiachen.github.io/vue-element-admin-site/zh/)
 - 动态权限控制
 
+## 在线预览
+
+  https://iotjin.github.io/jh-vue-admin
+
 ## vue-admin-template 介绍
 
 > 这是一个极简的 vue admin 管理后台。它只包含了 Element UI & axios & iconfont & permission control & lint，这些搭建后台必要的东西。
@@ -22,6 +26,7 @@
   <summary><strong>重要更新</strong></summary>
    
 ```
+* v1.4.0版本，添加demos
 * v1.3.0版本，添加tagsView显隐控制
 * v1.2.0版本，添加权限控制
 * v1.1.0版本，添加TagsView功能
@@ -32,6 +37,7 @@
 ## 分支
 - `template`分支在`vue-admin-template`基础上添加了`TagsView`
 - `permission-template`分支在`permission-control`基础上添加了`TagsView`
+- `gh-pages`分支放置`dist`包，进行在线预览
 
 ## Build Setup
 
@@ -53,6 +59,8 @@ npm run dev
 ```
 
 浏览器访问 [http://localhost:9528](http://localhost:9528)
+
+在线预览 [https://iotjin.github.io/jh-vue-admin](https://iotjin.github.io/jh-vue-admin)
 
 ## 发布
 
