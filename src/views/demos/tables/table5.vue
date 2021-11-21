@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>home4</div>
+    <div>table5</div>
   </div>
 </template>
 
@@ -20,7 +20,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.GLOBAL.title)
   },
   methods: {
   }

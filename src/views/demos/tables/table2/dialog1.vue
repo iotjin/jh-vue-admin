@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- 新增 编辑弹框 -->
-    <el-dialog :title="dialogTitle" :visible.sync="isShowDialog" top="8vh" width="60%" :close-on-click-modal="false" @opend="onOpenDialog" @closed="onCloseDialog">
+    <el-dialog :title="dialogTitle" :visible.sync="isShowDialog" top="8vh" width="60%" :close-on-click-modal="false" @opened="onOpenedDialog" @closed="onClosedDialog">
       <div class="spp-dialog">
-        <el-form ref="dialogFormRef" :model="dialogFormData" :inline="true" :rules="dialogRules" label-width="120px" size="small" :disabled="dialogIsLook">
+        <el-form ref="dialogFormRef" :model="dialogFormData" :inline="true" :rules="dialogFormRules" label-width="120px" size="small" :disabled="dialogIsLook">
           <el-form-item label="操作人:" prop="name1">
             <el-input v-model="dialogFormData.name1" placeholder="请输入" clearable />
           </el-form-item>
@@ -44,7 +44,7 @@
           </el-form-item>
         </el-form>
         <div v-if="!dialogIsLook" slot="footer" class="dialog-footer spp-dialog-btns">
-          <el-button :loading="dialogSubmitBtnLoading" type="primary" size="small" @click="onDialogSubmit(dialogFormData)">保存
+          <el-button :loading="dialogSubmitBtnLoading" size="small" type="primary" @click="onDialogSubmit(dialogFormData)">保存
           </el-button>
           <el-button size="small" @click="isShowDialog = false">取消</el-button>
         </div>
@@ -67,7 +67,7 @@ export default {
     // 是否显示
     isShow: { type: Boolean, default: false },
     // 标题：新增、编辑、查看
-    title: { type: String, default: '提示' },
+    title: { type: String, default: '' },
     // 传参
     dialogData: { type: Object, default: () => ({}) },
     // add，edit，look
@@ -79,7 +79,7 @@ export default {
     return {
       levelOptions: [],
       // 弹框相关
-      dialogTitle: '',
+      dialogTitle: '提示',
       isShowDialog: false,
       dialogSubmitBtnLoading: false,
       dialogIsLook: false,
@@ -95,7 +95,7 @@ export default {
         money: '',
         age: ''
       },
-      dialogRules: {
+      dialogFormRules: {
         name1: [
           { required: true, message: '请输入', trigger: 'blur' },
           { min: 1, max: 10, message: '10字符以内', trigger: 'blur' }
@@ -132,14 +132,14 @@ export default {
       this.showDialog(val)
     },
     title: function(val) {
-      this.dialogTitle = val
+      this.dialogTitle = val.length ? val : this.dialogTitle
       this.dialogIsLook = val === '查看'
     },
     dialogData: function(val) {
       this.dialogFormData = val
     },
     dialogType: function(val) {
-      this.dialogTitle = val === 'add' ? '新增' : (val === 'edit' ? '编辑' : (val === 'look' ? '查看' : '提示'))
+      this.dialogTitle = val === 'add' ? '新增' : (val === 'edit' ? '编辑' : (val === 'look' ? '查看' : this.dialogTitle))
       this.dialogIsLook = val === 'look'
     }
   },
@@ -176,10 +176,10 @@ export default {
       }
     },
     // 弹框相关
-    onOpenDialog() {
+    onOpenedDialog() {
       this.requestDict()
     },
-    onCloseDialog() {
+    onClosedDialog() {
       if (!this.dialogIsLook) {
         this.$refs['dialogFormRef'].resetFields() // 仅清除验证
       }

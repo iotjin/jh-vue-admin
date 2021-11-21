@@ -95,7 +95,7 @@
     </div>
 
     <!-- 新增 编辑弹框 -->
-    <Dialog1 :dialog-type="dialogType" :is-show.sync="isShowDialog" :dialog-data="dialogFormData" jump-page="table2页面" @success="requestList" @closed="onCloseDialog" />
+    <Dialog1 :dialog-type="dialogType" :is-show.sync="isShowDialog" :dialog-data="dialogFormData" jump-page="table2页面" @success="requestList" @closed="onClosedDialog" />
 
   </div>
 </template>
@@ -388,7 +388,7 @@ export default {
         that.dialogFormData = { ...data }
       })
     },
-    onCloseDialog() {
+    onClosedDialog() {
       this.$refs.tableRef.clearSelection()
     }
 

@@ -99,7 +99,7 @@
     </div>
 
     <!-- 新增 编辑弹框 -->
-    <el-dialog :title="dialogTitle" :visible.sync="isShowDialog" top="8vh" width="760px" :close-on-click-modal="false" @opened="onOpenDialog" @closed="onCloseDialog">
+    <el-dialog :title="dialogTitle" :visible.sync="isShowDialog" top="8vh" width="760px" :close-on-click-modal="false" @opened="onOpenDialog" @closed="onClosedDialog">
       <div class="spp-dialog">
         <el-form ref="dialogFormRef" :model="dialogFormData" :inline="true" :rules="dialogRules" label-width="120px" size="small" :disabled="dialogIsLook">
           <el-form-item label="操作人:" prop="name1">
@@ -474,7 +474,7 @@ export default {
     onOpenDialog() {
 
     },
-    onCloseDialog() {
+    onClosedDialog() {
       this.$refs.tableRef.clearSelection()
       if (!this.dialogIsLook) {
         this.$refs['dialogFormRef'].resetFields() // 仅清除验证

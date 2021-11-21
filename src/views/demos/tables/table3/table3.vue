@@ -37,6 +37,7 @@
       <div class="spp-table-btns">
         <el-button size="small" type="primary" @click="onAdd"><i class="el-icon-plus" />新增 </el-button>
         <el-button size="small" type="danger" @click="onDelete"><i class="el-icon-delete" />删除 </el-button>
+        <el-button size="small" type="primary" @click="onClickBtn()"><i class="el-icon-edit" />弹框添加 </el-button>
       </div>
       <el-form ref="formRef" :model="tableForm" label-width="120px" :inline="true" :rules="formRules" size="small" label-position="center">
         <!-- class="spp-table spp-theme-top my-table -->
@@ -108,28 +109,35 @@
 
     </div>
 
+    <!-- 弹框 -->
+    <Dialog3 :is-show.sync="isShowDialog" :dialog-data="dialogFormData" jump-page="table2页面" @success="requestList" @closed="onClosedDialog" />
+
   </div>
 </template>
 <script>
+
+import Dialog3 from './dialog3.vue'
 import TimeUtils from '@/utils/timeUtils'
 // import { getDeptList } from '@/api/base/base'
 // import { getListData, editData, getDataById, exportById } from '@/api/table/table'
 export default {
   components: {
+    Dialog3
   },
   data() {
     var validate1 = (rule, value, callback) => {
       if (!value) {
         callback(new Error('请选择创建时间'))
       } else {
-        const index = rule.field.substr(10, 1) // tableData.0.createDate
-        const isBool = TimeUtils.Jh_compareTimes(value, this.tableForm.tableData[index].updateDate)
+        var index = rule.field.substr(10, 1) // tableData.0.createDate
+        var updateDate = this.tableForm.tableData[index].updateDate
+        var isBool = TimeUtils.Jh_compareTimes(value, updateDate)
         if (isBool) {
           callback(new Error('创建时间不能大于操作时间!'))
         }
-        // const startTime = TimeUtils.Jh_timeStampToTime(new Date().getTime(), '{y}-{m}-{d} {h}:{i}:{s}') // 当前时间
-        // const endTime = TimeUtils.Jh_timeStampToTime(new Date().getTime() + 1000 * 60 * 60 * 24 * 1, '{y}-{m}-{d} {h}:{i}:{s}') // 一天后
-        // const isBool2 = TimeUtils.Jh_isBetweenTimes(value, startTime, endTime)
+        // var startTime = TimeUtils.Jh_timeStampToTime(new Date().getTime(), '{y}-{m}-{d} {h}:{i}:{s}') // 当前时间
+        // var endTime = TimeUtils.Jh_timeStampToTime(new Date().getTime() + 1000 * 60 * 60 * 24 * 1, '{y}-{m}-{d} {h}:{i}:{s}') // 一天后
+        // var isBool2 = TimeUtils.Jh_isBetweenTimes(value, startTime, endTime)
         // if (!isBool2) {
         //   callback(new Error('创建时间必须在开始时间和结束时间内!'))
         // }
@@ -140,8 +148,8 @@ export default {
       if (!value) {
         callback(new Error('请选择操作时间'))
       } else {
-        const index = rule.field.substr(10, 1)
-        const isBool = TimeUtils.Jh_compareTimes(value, this.tableForm.tableData[index].createDate)
+        var index = rule.field.substr(10, 1)
+        var isBool = TimeUtils.Jh_compareTimes(value, this.tableForm.tableData[index].createDate)
         if (!isBool) {
           callback(new Error('操作时间不能小于创建时间!'))
         }
@@ -184,7 +192,10 @@ export default {
       selectionList: [], // 勾选一行或多行数据
       // 字典项
       deptOptions: [], // 部门
-      dialogSubmitBtnLoading: false
+      dialogSubmitBtnLoading: false,
+      // 弹框相关
+      isShowDialog: false,
+      dialogFormData: {}
     }
   },
   mounted() {
@@ -198,11 +209,11 @@ export default {
     },
     // 加载列表数据
     requestList() {
-      const params = this.tableSearchParams
+      var params = this.tableSearchParams
       // this.tableLoading = true;
       console.log('参数：' + JSON.stringify(params))
       // requestList(params).then(response => {
-      //   const {
+      //   var {
       //     data
       //   } = response
       //   this.tableForm.tableData = data;
@@ -211,7 +222,7 @@ export default {
       // }).catch(error => {
       //   this.tableLoading = false;
       // });
-      const tempArr = []
+      var tempArr = []
       for (let index = 0; index < 2; index++) {
         var id = index + 1
         tempArr.push({
@@ -251,7 +262,6 @@ export default {
     // 设置表头样式
     headerCellStyle({ row, column, rowIndex, columnIndex }) {
       // return { textAlign: 'center' }
-      //
       if (rowIndex === 0 && columnIndex === 0) {
         // 隐藏头部
         return { textAlign: 'center', background: '#eef1f6', display: 'none' }
@@ -268,7 +278,7 @@ export default {
       row.xh = rowIndex + 1
     },
     addStar(obj) {
-      console.log(obj)
+      // console.log(obj)
       // if (obj.columnIndex === 0 || obj.columnIndex === 1) {
       return 'star'
       // }
@@ -280,7 +290,7 @@ export default {
       this.selectionList = val
     },
     onAdd() {
-      const item = {
+      var item = {
         'id': '',
         'name': '',
         'dept': '',
@@ -317,7 +327,7 @@ export default {
         type: 'warning'
       }).then(() => {
         // 主要实现步骤，先把表格行数存到一个新数组
-        const tempArr = []
+        var tempArr = []
         for (let i = 0; i < this.selectionList.length; i++) {
           tempArr.push(this.selectionList[i].xh)
         }
@@ -361,6 +371,33 @@ export default {
           this.$message.warning('有未输入项')
         }
       })
+    },
+    // 操作按钮 - 弹框添加
+    onClickBtn(btnValue) {
+      this.dialogFormData = JSON.parse(JSON.stringify(this.tableForm))
+      this.isShowDialog = true
+      // if (this.selectionList.length === 0) {
+      //   this.$message.warning('请选择记录')
+      //   return
+      // } else if (this.selectionList.length > 1) {
+      //   this.$message.warning('只能选择一条记录！')
+      //   return
+      // } else {
+      //   this.selectId = this.selectionList[0].id
+      //   this.isShowDialog = true
+      // }
+    },
+    // 弹框相关
+    // 对弹框数据赋值
+    handelDialogSetData(data) {
+      var that = this
+      this.$nextTick(() => {
+        // that.dialogFormData = JSON.parse(JSON.stringify(data))
+        that.dialogFormData = { ...data }
+      })
+    },
+    onClosedDialog() {
+      this.$refs.tableRef.clearSelection()
     }
 
   }

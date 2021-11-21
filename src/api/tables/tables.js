@@ -55,3 +55,19 @@ export function getDictLevel(params) {
     params
   })
 }
+
+export function getDictLeader(params) {
+  return request({
+    url: '/v1/api/dict/leader',
+    method: 'get',
+    params
+  })
+}
+
+export function getDictDept(params) {
+  return request({
+    url: '/v1/api/dict/dept',
+    method: 'get',
+    params
+  })
+}
