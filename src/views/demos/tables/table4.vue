@@ -32,6 +32,7 @@
       <div class="spp-table-btns">
         <el-button size="small" type="primary" @click="onClickBtn(1)"><i class="el-icon-edit" />延期 </el-button>
         <el-button size="small" type="primary" @click="onClickBtn(2)"><i class="el-icon-edit" />人员变更 </el-button>
+        <el-button size="small" type="primary" @click="onClickBtn(3)"><i class="el-icon-edit" />树弹框 </el-button>
 
       </div>
       <el-table ref="tableRef" v-loading="tableLoading" class="spp-table spp-theme-top" :data="tableData" :stripe="true" :header-cell-style="{textAlign: 'center'}" :cell-style="{textAlign: 'center'}" style="width: 100%" @selection-change="selectionLineChangeHandle">
@@ -79,6 +80,9 @@
     <!-- 延期弹框 -->
     <Dialog2 :is-show.sync="isShowDialog2" :dialog-data="dialogFormData" jump-page="table4页面" @success="requestList" @closed="onClosedDialog" />
 
+    <!-- 树弹框 -->
+    <Dialog3 :is-show.sync="isShowDialog3" :dialog-data="dialogFormData" jump-page="table4页面" @success="requestList" @closed="onClosedDialog" />
+
   </div>
 </template>
 
@@ -89,11 +93,13 @@ import TimeUtils from '@/utils/timeUtils'
 import { getDictLevel, getListData, getDataById } from '@/api/tables/tables'
 import Dialog1 from '@/views/demos/dialogs/dialog1.vue'
 import Dialog2 from '@/views/demos/dialogs/dialog2.vue'
+import Dialog3 from '@/views/demos/dialogs/dialog3.vue'
 
 export default {
   components: {
     Dialog1,
-    Dialog2
+    Dialog2,
+    Dialog3
   },
   data() {
     return {
@@ -114,6 +120,7 @@ export default {
       isShowDialog1: false,
       dialogFormData: {},
       isShowDialog2: false,
+      isShowDialog3: false,
       // 字典项
       deptOptions: [],
       levelOptions: [],
@@ -211,6 +218,9 @@ export default {
         }
         if (btnValue === 2) {
           this.isShowDialog2 = true
+        }
+        if (btnValue === 3) {
+          this.isShowDialog3 = true
         }
       }
     },

@@ -71,3 +71,11 @@ export function getDictDept(params) {
     params
   })
 }
+
+export function getDictDeptTree(params) {
+  return request({
+    url: '/v1/api/dict/tree',
+    method: 'get',
+    params
+  })
+}
