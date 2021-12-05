@@ -17,6 +17,7 @@ import '@/permission' // permission control
 
 // 引入全局常量
 import constant from '@/common/const'
+import BaseTree from '@/views/components/base-tree'
 
 /**
  * If you don't want to use mock-server
@@ -42,6 +43,7 @@ Vue.prototype.pageGroup = { index: 1, size: 10, sizes: [10, 20, 50, 100] }// 表
 
 // 引入全局常量
 Vue.use(constant)
+Vue.component('base-tree', BaseTree)
 
 new Vue({
   el: '#app',

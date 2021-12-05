@@ -7,22 +7,43 @@
       <div class="content">
         <div v-loading.fullscreen.lock="dialogLoading" class="left">
           <!-- 单选树，只能勾选末级节点 -->
-          <el-tree ref="tree" node-key="id" show-checkbox highlight-current :data="treeData" :props="defaultProps" :default-expand-all="true" @check-change="handleCheckChange" />
+          <el-tree ref="tree" node-key="id" :data="treeData" show-checkbox highlight-current default-expand-all :props="defaultProps" @check-change="handleCheckChange" />
+
+          <!-- 单选树，可点击文字选中 -->
+          <!-- <el-tree ref="tree" node-key="id" :data="treeData" show-checkbox check-strictly highlight-current default-expand-all :props="defaultProps" @node-click="handleNodeClick2" @check-change="handleCheckChange2" /> -->
+
         </div>
         <div class="right">
           <div class="spp-dialog">
             <el-form ref="dialogFormRef" :model="dialogFormData" :inline="false" :rules="dialogFormRules" size="small" label-width="200px" :disabled="dialogIsLook">
               <el-form-item label="选择树:" prop="deptName">
-                <el-input v-model="dialogFormData.deptName" placeholder="请点击右侧选择" disabled />
+                <el-input v-model="deptName" placeholder="请点击右侧选择" disabled />
               </el-form-item>
-              <el-form-item label="有效期延长到:" prop="expireTime">
-                <el-date-picker v-model="dialogFormData.expireTime" style="width:310px;" type="datetime" format="yyyy年MM月dd日 HH时mm分" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间" clearable />
+              <el-form-item label="单选树:" prop="subId">
+                <base-tree v-model="dialogFormData.subId" :options="treeOptions" @select="treeSelect" />
               </el-form-item>
-              <el-form-item label="签字时间:" prop="signTime">
-                <el-date-picker v-model="dialogFormData.signTime" style="width:310px;" type="datetime" format="yyyy年MM月dd日 HH时mm分" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间" clearable />
+              <el-form-item label="多选树:" prop="subIds">
+                <base-tree v-model="dialogFormData.subIds" :options="treeOptions" placeholder="请选择多选树" :multiple="true" />
               </el-form-item>
-              <el-form-item label="备注:" prop="notes">
-                <el-input v-model="dialogFormData.notes" style="width:310px" type="textarea" :autosize="{ minRows: 4, maxRows: 4}" placeholder="请输入内容" />
+              <el-form-item label="多选树2:" prop="subIds2">
+                <Treeselect
+                  v-model="dialogFormData.subIds2"
+                  class="treeselect-main"
+                  :normalizer="normalizer"
+                  placeholder="请选择"
+                  :options="treeOptions"
+                  value-consists-of="LEAF_PRIORITY"
+                  :multiple="true"
+                />
+              </el-form-item>
+              <el-form-item label="创建时间:" prop="createDate">
+                <el-date-picker v-model="dialogFormData.createDate" style="width:310px;" type="datetime" format="yyyy年MM月dd日 HH时mm分" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间" clearable />
+              </el-form-item>
+              <el-form-item label="更新时间:" prop="updateDate">
+                <el-date-picker v-model="dialogFormData.updateDate" style="width:310px;" type="datetime" format="yyyy年MM月dd日 HH时mm分" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间" clearable />
+              </el-form-item>
+              <el-form-item label="备注:" prop="content">
+                <el-input v-model="dialogFormData.content" style="width:310px" type="textarea" :autosize="{ minRows: 4, maxRows: 4}" placeholder="请输入内容" />
               </el-form-item>
             </el-form>
           </div>
@@ -41,11 +62,12 @@
 <script>
 // import { getDeptList, getStationTree } from '@/api/base/base'
 import { getDictLevel, getDictDeptTree, addData } from '@/api/tables/tables'
-import * as checkUtils from '@/utils/checkUtils'
-import { REGEX_phone } from '@/utils/checkUtils'
-import TimeUtils from '@/utils/timeUtils'
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+
 export default {
   components: {
+    Treeselect
   },
   props: {
     // 是否显示
@@ -61,6 +83,17 @@ export default {
   },
   data() {
     return {
+      normalizer(node) {
+        // 去掉children=[]的children属性
+        if (node.children && !node.children.length) {
+          delete node.children
+        }
+        return {
+          id: node.id,
+          label: node.label,
+          children: node.children
+        }
+      },
       defaultProps: {
         children: 'children',
         label: 'label'
@@ -68,50 +101,33 @@ export default {
       dialogLoading: false,
       levelOptions: [],
       // 弹框相关
-      dialogTitle: '延期申请',
+      dialogTitle: '树弹框',
       isShowDialog: false,
       dialogSubmitBtnLoading: false,
       dialogIsLook: false,
       treeData: [],
+      treeCheckedId: '',
+      treeOptions: [],
+      deptName: '',
       dialogFormData: {
         deptId: '',
-        deptName: '',
-        expireTime: '',
-        signTime: TimeUtils.Jh_timeStampToTime(new Date().getTime(), '{y}-{m}-{d} {h}:{i}:{s}'),
-        notes: ''
+        subId: '',
+        subIds: '',
+        subIds2: '',
+        createDate: '',
+        updateDate: '',
+        content: ''
       },
       dialogFormRules: {
-        deptName: [{ required: true, message: '请选择', trigger: 'change' }],
-        expireTime: [{ required: true, message: '请选择', trigger: 'change' }],
-        signTime: [{ required: true, message: '请选择', trigger: 'blur' }],
-        notes: [
-          { required: false, message: '请输入', trigger: 'blur' },
-          { min: 1, max: 10, message: '10字符以内', trigger: 'blur' }
-        ],
-        name1: [
-          { required: true, message: '请输入', trigger: 'blur' },
-          { min: 1, max: 10, message: '10字符以内', trigger: 'blur' }
-        ],
+        deptId: [{ required: true, message: '请选择', trigger: 'change' }],
+        subId: [{ required: true, message: '请选择', trigger: 'blur' }],
+        subIds: [{ required: true, message: '请选择', trigger: 'change' }],
+        subIds2: [{ required: true, message: '请选择', trigger: 'change' }],
+        createDate: [{ required: true, message: '请选择', trigger: 'change' }],
+        updateDate: [{ required: true, message: '请选择', trigger: 'blur' }],
         content: [
           { required: false, message: '请输入', trigger: 'blur' },
           { min: 1, max: 100, message: '100字符以内', trigger: 'blur' }
-        ],
-        level: [{ required: true, message: '请选择', trigger: 'change' }],
-        createDate: [{ required: true, message: '请选择', trigger: 'blur' }],
-        updateDate: [{ required: true, message: '请选择', trigger: 'blur' }],
-        status: [{ required: true, message: '请选择', trigger: 'blur' }],
-        isUse: [{ required: true, message: '请选择', trigger: 'blur' }],
-        phone: [
-          { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: REGEX_phone, message: '请输入正确手机号' }
-        ],
-        money: [
-          { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: checkUtils.REGEX_money, message: '请输入最多两位小数金额' }
-        ],
-        age: [
-          { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^[1-9]\d*$/, message: '仅支持录入正整数' }
         ]
       }
     }
@@ -127,7 +143,9 @@ export default {
       this.dialogTitle = val.length ? val : this.dialogTitle
     },
     dialogData: function(val) {
-      this.dialogFormDataData = val
+      val.deptId = ''
+      this.dialogFormData = val
+      console.log(JSON.stringify(this.dialogFormData))
     },
     dialogType: function(val) {
     }
@@ -149,7 +167,7 @@ export default {
       getDictDeptTree().then(res => {
         if (res.code === 20000) {
           var data = res.data
-          console.log(JSON.stringify(data))
+          that.treeOptions = data
           data[0].label = '一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录'
           that.treeData = data
         }
@@ -165,20 +183,50 @@ export default {
         }
       }
     },
-    handleNodeClick(data) {
+    handleCheckChange(data, checked, node) {
+      if (checked === true) {
+        this.treeCheckedId = data.id
+        this.dialogFormData.deptId = data.id
+        this.deptName = data.label
+        this.$refs.tree.setCheckedKeys([data.id])
+      } else {
+        if (this.treeCheckedId === data.id) {
+          this.dialogFormData.deptId = data.id
+          this.deptName = data.label
+          this.$refs.tree.setCheckedKeys([data.id])
+        }
+      }
+    },
+    handleNodeClick2(data) { // 自己定义的editCheckId，防止单选出现混乱
       console.log('点击树选择的id===' + data.id)
       console.log(JSON.stringify(data))
+      this.treeCheckedId = data.id
       this.dialogFormData.deptId = data.id
-      this.dialogFormData.deptName = data.label
-      this.$refs.tree.setCheckedKeys([data.id], true)
+      this.deptName = data.label
+      this.$refs.tree.setCheckedKeys([data.id])
     },
-    handleCheckChange(data, checked) {
-      // data 即为选择的集合值
+    handleCheckChange2(data, checked) {
       if (checked) {
         this.dialogFormData.deptId = data.id
-        this.dialogFormData.deptName = data.label
-        this.$refs.tree.setCheckedKeys([data.id], true)
+        this.deptName = data.label
+        this.$refs.tree.setCheckedKeys([data.id])
+      } else {
+        if (this.treeCheckedId === data.id) {
+          this.dialogFormData.deptId = data.id
+          this.deptName = data.label
+          this.$refs.tree.setCheckedKeys([data.id])
+        }
       }
+    },
+    treeSelect(value, item) {
+      var ancestorNames = item.ancestorNames[0]
+      var ancestorIds = item.ancestorIds[0]
+      // var ancestorNames1 = item.ancestorNames[1]
+      // var ancestorIds1 = item.ancestorIds[1]
+      console.log(ancestorNames)
+      console.log(ancestorIds)
+      // console.log(ancestorNames1)
+      // console.log(ancestorIds1)
     },
     showDialog(isShow) {
       this.$emit('update:isShow', isShow) // isShowDialog改变时同步父组件show的值
@@ -261,9 +309,12 @@ export default {
   padding: 15px 30px 30px 10px;
 }
 
+// 修改tree当前行的高亮显示样式
 // ::v-deep .el-tree-node:focus > .el-tree-node__content {
 //   background-color: #000 !important;
 // }
+
+// 末级节点显示勾选框
 ::v-deep .el-tree-node {
   .is-leaf + .el-checkbox .el-checkbox__inner {
     display: inline-block;
@@ -273,6 +324,7 @@ export default {
   }
 }
 
+// tree显示滚动条
 .tree {
   overflow-y: hidden;
   overflow-x: scroll;
@@ -282,5 +334,61 @@ export default {
 .el-tree {
   min-width: 100%;
   display: inline-block !important;
+}
+
+.treeselect-main {
+  display: inline-block;
+  width: 210px;
+  min-height: 32px;
+  line-height: 14px;
+
+  ::v-deep .vue-treeselect__placeholder {
+    line-height: 30px;
+  }
+
+  //最上层
+  ::v-deep .vue-treeselect__control {
+    height: 32px;
+    width: 210px;
+    background: #f5f5f5;
+  }
+
+  //上层
+  ::v-deep .vue-treeselect__value-container {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 30px;
+  }
+
+  //标签外层
+  ::v-deep .vue-treeselect__multi-value {
+    position: absolute;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: hidden;
+  }
+
+  //item
+  ::v-deep .vue-treeselect__multi-value-item {
+    display: inline-block !important;
+  }
+
+  ::v-deep .vue-treeselect__multi-value-label {
+    display: block;
+    white-space: nowrap;
+  }
+
+  //全部取消隐藏
+  ::v-deep .vue-treeselect__x-container {
+    display: none;
+  }
+
+  ::v-deep .vue-treeselect__icon {
+    display: none;
+  }
 }
 </style>
