@@ -23,9 +23,9 @@
                 <base-tree v-model="dialogFormData.subId" :options="treeOptions" @select="treeSelect" />
               </el-form-item>
               <el-form-item label="多选树:" prop="subIds">
-                <base-tree v-model="dialogFormData.subIds" :options="treeOptions" placeholder="请选择多选树" :multiple="true" />
+                <base-tree v-model="dialogFormData.subIds" :options="treeOptions" value-consists-of="LEAF_PRIORITY" placeholder="请选择多选树" multiple />
               </el-form-item>
-              <el-form-item label="多选树2:" prop="subIds2">
+              <!-- <el-form-item label="多选树2:" prop="subIds2">
                 <Treeselect
                   v-model="dialogFormData.subIds2"
                   class="treeselect-main"
@@ -35,7 +35,7 @@
                   value-consists-of="LEAF_PRIORITY"
                   :multiple="true"
                 />
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item label="创建时间:" prop="createDate">
                 <el-date-picker v-model="dialogFormData.createDate" style="width:310px;" type="datetime" format="yyyy年MM月dd日 HH时mm分" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间" clearable />
               </el-form-item>
@@ -62,12 +62,12 @@
 <script>
 // import { getDeptList, getStationTree } from '@/api/base/base'
 import { getDictLevel, getDictDeptTree, addData } from '@/api/tables/tables'
-import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+// import Treeselect from '@riophae/vue-treeselect'
+// import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
   components: {
-    Treeselect
+    // Treeselect
   },
   props: {
     // 是否显示
@@ -219,6 +219,8 @@ export default {
       }
     },
     treeSelect(value, item) {
+      console.log('==treeSelect==')
+      console.log(JSON.stringify(value))
       var ancestorNames = item.ancestorNames[0]
       var ancestorIds = item.ancestorIds[0]
       // var ancestorNames1 = item.ancestorNames[1]

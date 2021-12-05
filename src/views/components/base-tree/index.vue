@@ -9,14 +9,14 @@
     :disable-branch-nodes="!multiple"
     :normalizer="normalizer"
     :placeholder="placeholder"
-    value-consists-of="LEAF_PRIORITY"
+    :value-consists-of="valueConsistsOf"
     no-options-text="暂无数据"
     no-results-text="暂无搜索结果"
     :max-height="200"
     :append-to-body="appendToBody"
     class="treeselect-main"
     @input="onInput"
-    @select="treeSelect"
+    @select="onSelect"
   />
 </template>
 
@@ -47,7 +47,15 @@ export default {
     placeholder: { type: String, default: '请选择' },
     disabled: { type: Boolean, default: false },
     zIndex: { type: [String, Number], default: 9999 },
-    appendToBody: { type: Boolean, default: false }
+    appendToBody: { type: Boolean, default: false },
+    // https://www.vue-treeselect.cn/#prevent-value-combining
+    // value 在多选模式下，数组中应包括哪种节点。
+    // 可接受的值："ALL", "BRANCH_PRIORITY", "LEAF_PRIORITY" or "ALL_WITH_INDETERMINATE".
+    // "ALL" - 选中的所有节点都将包含在 value 数组中
+    // "BRANCH_PRIORITY"（默认）-如果选中了分支节点，则其所有后代将被排除在value 数组之外
+    // "LEAF_PRIORITY" - 如果选中了分支节点，则此节点本身及其分支后代将从value阵列中排除，但其叶后代将包括在内
+    // "ALL_WITH_INDETERMINATE" -选中的任何节点将包括在value 数组中，另外还有不确定的节点
+    valueConsistsOf: { type: String, default: 'LEAF_PRIORITY' }
   },
   data() {
     return {
@@ -86,7 +94,7 @@ export default {
     this.treeValue = this.value === '' ? null : this.value
   },
   methods: {
-    treeSelect(value, instanceId) {
+    onSelect(value, instanceId) {
       var dict = this.getAncestorIds(value.id)
       this.$emit('select', value, dict) // 传出选择对象
     },
