@@ -17,7 +17,7 @@
           <div class="spp-dialog">
             <el-form ref="dialogFormRef" :model="dialogFormData" :inline="false" :rules="dialogFormRules" size="small" label-width="200px" :disabled="dialogIsLook">
               <el-form-item label="选择树:" prop="deptName">
-                <el-input v-model="deptName" placeholder="请点击右侧选择" disabled />
+                <el-input v-model="dialogFormData.deptName" placeholder="请点击右侧选择" disabled />
               </el-form-item>
               <el-form-item label="单选树:" prop="subId">
                 <base-tree v-model="dialogFormData.subId" :options="treeOptions" @select="treeSelect" />
@@ -108,9 +108,9 @@ export default {
       treeData: [],
       treeCheckedId: '',
       treeOptions: [],
-      deptName: '',
       dialogFormData: {
         deptId: '',
+        deptName: '',
         subId: '',
         subIds: '',
         subIds2: '',
@@ -120,6 +120,7 @@ export default {
       },
       dialogFormRules: {
         deptId: [{ required: true, message: '请选择', trigger: 'change' }],
+        deptName: [{ required: true, message: '请选择3', trigger: 'change' }],
         subId: [{ required: true, message: '请选择', trigger: 'blur' }],
         subIds: [{ required: true, message: '请选择', trigger: 'change' }],
         subIds2: [{ required: true, message: '请选择', trigger: 'change' }],
@@ -144,6 +145,7 @@ export default {
     },
     dialogData: function(val) {
       val.deptId = ''
+      val.deptName = ''
       this.dialogFormData = val
       console.log(JSON.stringify(this.dialogFormData))
     },
@@ -187,12 +189,14 @@ export default {
       if (checked === true) {
         this.treeCheckedId = data.id
         this.dialogFormData.deptId = data.id
-        this.deptName = data.label
+        this.dialogFormData.deptName = data.label
+        this.dialogFormData = JSON.parse(JSON.stringify(this.dialogFormData))
         this.$refs.tree.setCheckedKeys([data.id])
       } else {
         if (this.treeCheckedId === data.id) {
           this.dialogFormData.deptId = data.id
-          this.deptName = data.label
+          this.dialogFormData.deptName = data.label
+          this.dialogFormData = JSON.parse(JSON.stringify(this.dialogFormData))
           this.$refs.tree.setCheckedKeys([data.id])
         }
       }
@@ -202,18 +206,21 @@ export default {
       console.log(JSON.stringify(data))
       this.treeCheckedId = data.id
       this.dialogFormData.deptId = data.id
-      this.deptName = data.label
+      this.dialogFormData.deptName = data.label
+      this.dialogFormData = JSON.parse(JSON.stringify(this.dialogFormData))
       this.$refs.tree.setCheckedKeys([data.id])
     },
     handleCheckChange2(data, checked) {
       if (checked) {
         this.dialogFormData.deptId = data.id
-        this.deptName = data.label
+        this.dialogFormData.deptName = data.label
+        this.dialogFormData = JSON.parse(JSON.stringify(this.dialogFormData))
         this.$refs.tree.setCheckedKeys([data.id])
       } else {
         if (this.treeCheckedId === data.id) {
           this.dialogFormData.deptId = data.id
-          this.deptName = data.label
+          this.dialogFormData.deptName = data.label
+          this.dialogFormData = JSON.parse(JSON.stringify(this.dialogFormData))
           this.$refs.tree.setCheckedKeys([data.id])
         }
       }
