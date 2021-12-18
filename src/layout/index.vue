@@ -26,6 +26,11 @@
       </div>
     </div>
 
+    <!-- 系统设置 -->
+    <right-panel v-if="showSettings">
+      <settings />
+    </right-panel>
+
   </div>
 </template>
 
@@ -33,6 +38,8 @@
 import { Navbar, Sidebar, AppMain, TagsView } from './components'
 import { TopHeader, Hamburger } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
+import RightPanel from '@/components/RightPanel'
+import { Settings } from './components'
 
 export default {
   name: 'Layout',
@@ -42,7 +49,9 @@ export default {
     AppMain,
     TagsView, // 新增tagsView
     TopHeader,
-    Hamburger
+    Hamburger,
+    RightPanel, // 新增Settings
+    Settings
   },
   mixins: [ResizeMixin],
   computed: {
@@ -60,6 +69,9 @@ export default {
     },
     hasTopHeader() {
       return this.$store.state.settings.topHeader
+    },
+    showSettings() {
+      return this.$store.state.settings.showSettings
     },
     classObj() {
       return {

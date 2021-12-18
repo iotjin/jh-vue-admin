@@ -14,5 +14,6 @@ module.exports = {
    */
   sidebarLogo: true,
   tagsView: true, // tagsView显隐控制
-  topHeader: false // topHeader显隐控制
+  topHeader: false, // topHeader显隐控制
+  showSettings: true
 }
