@@ -13,5 +13,6 @@ module.exports = {
    * @description Whether show the logo in sidebar
    */
   sidebarLogo: true,
-  tagsView: true // tagsView显隐控制
+  tagsView: true, // tagsView显隐控制
+  topHeader: false // topHeader显隐控制
 }

@@ -4,6 +4,7 @@
 - 添加[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)项目`TagsView`功能
 - [vue-element-admin 使用文档](https://panjiachen.github.io/vue-element-admin-site/zh/)
 - 动态权限控制
+- 添加`TopHeader`功能
 
 ## 在线预览
 
@@ -26,6 +27,7 @@
   <summary><strong>重要更新</strong></summary>
    
 ```
+* v1.5.0版本，添加TopHeader功能
 * v1.4.0版本，添加demos
 * v1.3.0版本，添加tagsView显隐控制
 * v1.2.0版本，添加权限控制
