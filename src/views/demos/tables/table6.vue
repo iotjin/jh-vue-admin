@@ -1,23 +1,19 @@
 <template>
   <div class="app-container">
-    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" :span-method="arraySpanMethod" row-key="id" border>
+
+    <el-table :data="tableData" :stripe="true" :header-cell-style="headerCellStyle" :cell-style="cellStyle" :row-class-name="rowClassName" border>
 
       <el-table-column type="expand">
         <template slot-scope="props">
 
-          <el-table class="table-in-table" :show-header="false" :data="props.row.datas" style="width: 100%;" row-key="id" :span-method="arraySpanMethod" border>
+          <el-table :data="props.row.datas" :stripe="true" :header-cell-style="headerCellStyle" :cell-style="cellStyle" :row-class-name="rowClassName" border>
 
             <el-table-column type="expand">
               <template slot-scope="props2">
-                <el-table class="table-in-table" :data="props2.row.datas" style="width: 100%;" row-key="id" border>
+                <el-table :data="props2.row.datas" :stripe="true" :header-cell-style="headerCellStyle" :cell-style="cellStyle" :row-class-name="rowClassName" border>
                   <el-table-column prop="date" label="下单日期" width="180" />
                   <el-table-column prop="type" label="单据类型" width="180" />
                   <el-table-column prop="status" label="状态" />
-                  <el-table-column label="操作" width="120">
-                    <template>
-                      <el-button type="text" size="small">移除</el-button>
-                    </template>
-                  </el-table-column>
                 </el-table>
               </template>
 
@@ -39,6 +35,7 @@
         </template>
       </el-table-column>
     </el-table>
+
   </div>
 </template>
 
@@ -65,13 +62,15 @@ export default {
           id: 1,
           applyNo: '202004291234',
           name: '张三',
-          address: '上海市普陀区金沙江路 1518 弄'
+          address: '上海市普陀区金沙江路 1518 弄',
+          datas: []
         },
         {
           id: 2,
           applyNo: '202004291235',
           name: '李四',
-          address: '上海市普陀区金沙江路 1517 弄'
+          address: '上海市普陀区金沙江路 1517 弄',
+          datas: []
         },
         {
           id: 3,
@@ -103,7 +102,8 @@ export default {
               id: 32,
               applyNo: '202004291237',
               name: '赵小六',
-              address: '上海市普陀区金沙江路 1519 弄'
+              address: '上海市普陀区金沙江路 1519 弄',
+              datas: []
             }
           ]
         },
@@ -111,17 +111,30 @@ export default {
           id: 4,
           applyNo: '202004291238',
           name: '赵六',
-          address: '上海市普陀区金沙江路 1516 弄'
+          address: '上海市普陀区金沙江路 1516 弄',
+          datas: []
         }
       ]
     },
-    arraySpanMethod({ row, column, rowIndex, columnIndex }) {
-      if (!row.datas) {
-        if (columnIndex === 0) {
-          return [0, 0]
-        } else if (columnIndex === 1) {
-          return [1, 2]
-        }
+    // 设置表头样式
+    headerCellStyle({ row, column, rowIndex, columnIndex }) {
+      return { textAlign: 'center', background: '#E6E6E6' }
+    },
+    // 设置表内容样式
+    cellStyle({ row, column, rowIndex, columnIndex }) {
+      return { textAlign: 'center' }
+    },
+    // 设置row样式
+    rowClassName({ row, rowIndex }) {
+      console.log(JSON.stringify(row))
+      const data = row
+      const res = []
+      if (data.datas && data.datas.length > 0) {
+        res.push('row-expand-has')
+        return res
+      } else {
+        res.push('row-expand-unhas')
+        return res
       }
     }
   }
@@ -129,19 +142,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.app-container {
-  ::v-deep {
-    .el-table th {
-      background: #ddeeff;
-    }
-    .el-table__expanded-cell {
-      border-bottom: 0px;
-      border-right: 0px;
-      padding: 0px 0px 0px 47px;
-    }
+::v-deep {
+  .row-expand-unhas .el-table__expand-column {
+    pointer-events: none;
   }
-  .table-in-table {
-    border-top: 0px;
+  .row-expand-unhas .el-table__expand-column .el-icon {
+    visibility: hidden;
   }
 }
 </style>
