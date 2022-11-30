@@ -35,6 +35,7 @@
         <el-button size="small" type="primary" @click="onLook"><i class="el-icon-search" />查看 </el-button>
         <el-button size="small" type="warning" @click="onExport"><i class="el-icon-download" />导出 </el-button>
         <el-button size="small" type="danger" @click="onDelete"><i class="el-icon-delete" />删除 </el-button>
+        <el-button size="small" type="primary" @click="onSelect"><i class="el-icon-plus" />选择 </el-button>
         <!-- <el-button v-permission="{action:'menu-add'}" size="small" type="primary" @click="onAdd"><i class="el-icon-plus" />新增 </el-button>
         <el-button v-permission="{action:'menu-edit'}" size="small" type="primary" @click="onEdit"><i class="el-icon-edit" />编辑 </el-button>
         <el-button v-permission="{action:'menu-export'}" size="small" type="warning" @click="onExport"><i class="el-icon-download" />导出 </el-button>
@@ -97,19 +98,23 @@
     <!-- 新增 编辑弹框 -->
     <Dialog1 :dialog-type="dialogType" :is-show.sync="isShowDialog" :dialog-data="dialogFormData" jump-page="table2页面" @success="requestList" @closed="onClosedDialog" />
 
+    <!-- 选择弹框 -->
+    <Dialog2 :is-show.sync="isShowSelectDialog" :dialog-data="dialogData2" @success="requestList" @closed="onClosedDialog" @select="onSelectfinish" />
+
   </div>
 </template>
 
 <script>
-
 import TimeUtils from '@/utils/timeUtils'
 // import { getDeptList } from '@/api/base/base'
 import { getDictLevel, getListData, getDataById, deleteData } from '@/api/tables/tables'
 import Dialog1 from './dialog1.vue'
+import Dialog2 from './dialog2.vue'
 
 export default {
   components: {
-    Dialog1
+    Dialog1,
+    Dialog2
   },
   data() {
     return {
@@ -133,7 +138,9 @@ export default {
       // 字典项
       deptOptions: [],
       levelOptions: [],
-      selectId: ''
+      selectId: '',
+      isShowSelectDialog: false,
+      dialogData2: {}
     }
   },
   mounted() {
@@ -390,8 +397,14 @@ export default {
     },
     onClosedDialog() {
       this.$refs.tableRef.clearSelection()
+    },
+    // 选择弹框相关
+    onSelect() {
+      this.isShowSelectDialog = true
+    },
+    onSelectfinish(value) {
+      console.log(JSON.stringify(value))
     }
-
   }
 }
 </script>

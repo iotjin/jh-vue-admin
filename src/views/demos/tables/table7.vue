@@ -1,7 +1,19 @@
 <template>
   <div class="app-container">
 
-    <el-table ref="tableRef" :data="singleOrderData" border :span-method="arraySpanMethod" :header-cell-style="headerCellStyle" :cell-class-name="cellClassName" :cell-style="cellStyle" @selection-change="selectionChangeHandle">
+    <el-table
+      id="table"
+      ref="tableRef"
+      :data="singleOrderData"
+      border
+      :span-method="arraySpanMethod"
+      :header-cell-style="headerCellStyle"
+      :cell-class-name="cellClassName"
+      :cell-style="cellStyle"
+      show-summary
+      :summary-method="getSummaries"
+      @selection-change="selectionChangeHandle"
+    >
       <el-table-column v-if="isShowCheckbox" type="selection" width="55" />
       <!-- productName use productPlaceholder field  -->
       <el-table-column label="Product" prop="productPlaceholder" width="150" />
@@ -107,6 +119,7 @@ export default {
         }
       ]
     },
+    // 数据转成平级
     handleData(singleOrderData) {
       var newArr = []
       for (let i = 0; i < singleOrderData.length; i++) {
@@ -144,7 +157,6 @@ export default {
           return { display: 'none' }
         }
       }
-
       return { textAlign: 'center', background: '#E6E6E6' }
     },
     // 设置表内容样式
@@ -161,7 +173,7 @@ export default {
         }
       }
     },
-    // 合并列
+    // 合并行或列
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
       // console.log('rowIndex=' + rowIndex + '-----' + 'columnIndex=' + columnIndex)
       // console.log('row')
@@ -199,6 +211,70 @@ export default {
       if (column['label'] === 'Total' && row.isChildren && !row.isStart) {
         return [0, 0]
       }
+    },
+    // 汇总合计计算 - 自定义
+    getSummaries(param) {
+      var tempData = this.singleOrderData
+      var allQuantity = 0
+      var allMoney = 0
+      for (let i = 0; i < tempData.length; i++) {
+        const product = tempData[i]
+        // 计算总数量(只计算子产品和普通产品)
+        if (product.isChildren || product.isNormalProduct) {
+          allQuantity += product.quantity
+        }
+        // 计算总金额(只计算父产品和普通产品)
+        if (!product.isChildren || product.isNormalProduct) {
+          allMoney += product.subTotal
+        }
+      }
+
+      // sums数组的每一个元素代表表格从左到右的列(column)
+      const sums = []
+      sums[0] = '合计'
+      sums[2] = '总数量: ' + allQuantity
+      sums[5] = '总金额: $' + allMoney
+
+      if (!this.isShowCheckbox) {
+        // 计算汇总合计后，合并footer（也可以设置样式）
+        // 需要在<el-table id="table">
+        this.$nextTick(() => {
+          const tds = document.querySelectorAll('#table .el-table__footer-wrapper tr>td')
+          // colSpan合并列
+          tds[1].colSpan = 1
+          tds[2].style.color = 'orange'
+          // tds[3].style.textAlign = 'center'
+          // tds[4].style.display = 'none'
+        })
+      }
+
+      return sums
+    },
+    // 汇总合计计算 - 官网方法
+    getSummaries2(param) {
+      const { columns, data } = param
+      const sums = []
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = '总价'
+          return
+        }
+        const values = data.map((item) => Number(item[column.property]))
+        if (!values.every((value) => isNaN(value))) {
+          sums[index] = values.reduce((prev, curr) => {
+            const value = Number(curr)
+            if (!isNaN(value)) {
+              return prev + curr
+            } else {
+              return prev
+            }
+          }, 0)
+          sums[index] += ' 元'
+        } else {
+          sums[index] = 'N/A'
+        }
+      })
+      return sums
     }
   }
 }
@@ -209,5 +285,44 @@ export default {
   .disabled-column .el-checkbox__input {
     display: none;
   }
+
+  // 解决el-table的合计行在横向滚动条下方的问题
+  .el-table {
+    overflow: auto;
+  }
+  .el-table__header-wrapper,
+  .el-table__body-wrapper,
+  .el-table__footer-wrapper {
+    overflow: visible;
+  }
+  .el-table__body-wrapper {
+    overflow-x: visible !important;
+  }
+  // 解决前面样式覆盖之后伪类带出来的竖线
+  .el-table::after {
+    position: relative;
+  }
+
+  // 合计字体颜色
+  .el-table__footer-wrapper tbody td:first-child {
+    color: red;
+    cursor: auto;
+  }
+
+  // 合计行字体颜色
+  .el-table__footer-wrapper tbody td {
+    color: #409eff;
+    cursor: pointer;
+  }
+
+  // // order默认值为0，只需将表体order置为1即可移到最后，这样总计行就上移到表体上方
+  // .el-table {
+  //   display: flex;
+  //   flex-direction: column;
+  // }
+
+  // .el-table__body-wrapper {
+  //   order: 1;
+  // }
 }
 </style>
