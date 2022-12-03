@@ -65,7 +65,11 @@
           <template slot-scope="scope"> {{ getName(scope.row.level,levelOptions) }} </template>
         </el-table-column>
         <el-table-column prop="status" label="处理状态">
-          <template slot-scope="scope"> {{ scope.row.status==0 ?'未处理':'已处理' }} </template>
+          <template slot-scope="scope">
+            <div :style="{'background':getBgColor(scope.row)}" class="tagClass">
+              {{ scope.row.status==0 ?'未处理':'已处理' }}
+            </div>
+          </template>
         </el-table-column>
         <el-table-column prop="isUse" label="启用">
           <template slot-scope="scope"> {{ scope.row.isUse==0 ?'停用':'启用' }} </template>
@@ -202,6 +206,15 @@ export default {
         if (tempData[i].value === value) {
           return tempData[i].label
         }
+      }
+    },
+    getBgColor(row) {
+      if (row.status === '0') {
+        // 未处理
+        return '#E6A23C'
+      } else {
+        // 已处理
+        return '#67C23A'
       }
     },
     // 页容量改变时会触发
@@ -410,4 +423,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tagClass {
+  color: white;
+  display: inline-block;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 4px;
+  word-break: break-word;
+}
 </style>
