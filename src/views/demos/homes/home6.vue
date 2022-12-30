@@ -53,6 +53,18 @@ export default {
         that.dialogText = data.name + '（' + data.type + '），' + 'code: ' + data.code
         that.dialogVisible = true
       })
+      // 监听滑动进度条事件
+      this.myChart1.on('dataZoom', (params) => {
+        const option = that.myChart1.getOption()
+        // 下标
+        const startValue = option.dataZoom[0].startValue
+        const endValue = option.dataZoom[0].endValue
+        // x轴数据
+        const axis = that.myChart1.getModel().option.xAxis[0]
+        const startTime = axis.data[startValue]
+        const endTime = axis.data[endValue]
+        console.log('滑动范围：' + startTime, endTime)
+      })
     },
     getOption1(chartData) {
       var option = {
@@ -71,28 +83,32 @@ export default {
         // ----- 不显示垂直缩放 -----
         xAxis: [{ data: chartData.xData, axisLabel: { color: '#333' }}],
         yAxis: [{ data: [] }], // 不显示y轴刻度（如果同一时间段有多个相同数据可使用这个）
-        // dataZoom: [{}],
         dataZoom: [
-          { type: 'slider', bottom: '2%' }, // 有单独的滑动条，用户在滑动条上进行缩放或漫游
-          { type: 'inside', bottom: '2%' } // 内置于坐标系中，用户在坐标系上通过鼠标拖拽、鼠标滚轮、手指滑动（触屏上）来缩放或漫游坐标系
+          {
+            xAxisIndex: 0, // x轴
+            type: 'slider',
+            bottom: '2%',
+            zoomLock: true, // 是否只平移不缩放(是否锁定选择区域（或叫做数据窗口）的大小)
+            start: 40, // 数据窗口范围的起始百分比。范围是：0 ~ 100。表示 0% ~ 100%。
+            end: 60, // 数据窗口范围的结束百分比。范围是：0 ~ 100。
+            minSpan: 20, // 用于限制窗口大小的最小值（百分比值），取值范围是 0 ~ 100。
+            maxSpan: 20, // 用于限制窗口大小的最大值（百分比值），取值范围是 0 ~ 100。
+            realtime: false, // 拖动时，是否实时更新系列的视图。如果设置为 false，则只在拖拽结束的时候更新。
+            filterMode: 'weakFilter'
+            // 'filter'：当前数据窗口外的数据，被 过滤掉。即 会 影响其他轴的数据范围。每个数据项，只要有一个维度在数据窗口外，整个数据项就会被过滤掉。
+            // 'weakFilter'：当前数据窗口外的数据，被 过滤掉。即 会 影响其他轴的数据范围。每个数据项，只有当全部维度都在数据窗口同侧外部，整个数据项才会被过滤掉。
+          },
+          {
+            xAxisIndex: 0,
+            type: 'inside',
+            bottom: '2%',
+            start: 40, // 数据窗口范围的起始百分比。范围是：0 ~ 100。表示 0% ~ 100%。
+            end: 60, // 数据窗口范围的结束百分比。范围是：0 ~ 100。
+            minSpan: 20, // 用于限制窗口大小的最小值（百分比值），取值范围是 0 ~ 100。
+            maxSpan: 20, // 用于限制窗口大小的最大值（百分比值），取值范围是 0 ~ 100。
+            filterMode: 'weakFilter'
+          }
         ],
-        // ----- 显示垂直缩放 -----
-        // xAxis: [{ data: chartData.xData, axisLabel: { color: '#333' }}],
-        // yAxis: {},
-        // yAxis: {
-        //   axisTick: { show: false },
-        //   splitLine: { show: false },
-        //   axisLine: { show: false },
-        //   axisLabel: { show: false },
-        //   min: 0,
-        //   max: chartData.listData.length
-        // },
-        // dataZoom: [
-        //   { type: 'slider', bottom: '2%' }, // 有单独的滑动条，用户在滑动条上进行缩放或漫游
-        //   { type: 'inside', bottom: '2%' }, // 内置于坐标系中，用户在坐标系上通过鼠标拖拽、鼠标滚轮、手指滑动（触屏上）来缩放或漫游坐标系
-        //   { type: 'slider', yAxisIndex: 0 },
-        //   { type: 'inside', yAxisIndex: 0 }
-        // ],
         series: [
           {
             type: 'custom',
@@ -172,6 +188,7 @@ export default {
     },
     requestChartData1() {
       // 间隔一致，保证开始结束时间都在x轴点上
+      // 如果拖动后获取的xData是动态变化的，可以约定一个拖动时间段范围，算出开始结束时间在xData中的索引占xData总长度的百分百，然后赋值给dataZoom的start和end
       var chartData = {
         xData: [
           '2021-01-01',
@@ -244,8 +261,8 @@ export default {
           { name: '类型18', type: 'type18', code: '0018', startTime: '2022-06-01', endTime: '2022-06-15' },
           { name: '类型19', type: 'type19', code: '0019', startTime: '2022-07-01', endTime: '2022-07-15' },
           { name: '类型20', type: 'type20', code: '0020', startTime: '2022-08-01', endTime: '2022-08-15' },
-          { name: '类型21', type: 'type21', code: '0021', startTime: '2022-01-01', endTime: '2022-01-01' } // 特殊
-          // { name: '类型22', type: 'type22', code: '0022', startTime: '2022-06-01', endTime: '2022-09-15' },
+          { name: '类型21', type: 'type21', code: '0021', startTime: '2022-01-01', endTime: '2022-01-01' }, // 特殊
+          { name: '类型22', type: 'type22', code: '0022', startTime: '2022-06-01', endTime: '2022-09-15' }
           // { name: '类型23', type: 'type23', code: '0023', startTime: '2022-06-01', endTime: '2022-10-15' },
           // { name: '类型24', type: 'type24', code: '0024', startTime: '2022-06-01', endTime: '2022-11-15' }
         ]
