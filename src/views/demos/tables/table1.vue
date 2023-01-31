@@ -44,7 +44,7 @@
         <el-button v-permission="{action:'menu-export'}" size="small" type="warning" @click="onExport"><i class="el-icon-download" />导出 </el-button>
         <el-button v-permission="{action:'menu-delete'}" size="small" type="danger" @click="onDelete"><i class="el-icon-delete" />删除 </el-button> -->
       </div>
-      <el-table ref="tableRef" v-loading="tableLoading" class="spp-table spp-theme-top" :data="tableData" :stripe="true" :header-cell-style="{textAlign: 'center'}" :cell-style="{textAlign: 'center'}" style="width: 100%" @selection-change="selectionLineChangeHandle">
+      <el-table ref="tableRef" v-loading="tableLoading" class="spp-table spp-theme-top" :data="tableData" :stripe="true" :header-cell-style="{textAlign: 'center'}" :cell-style="{textAlign: 'center'}" style="width: 100%" @selection-change="onSelectionChange">
         <el-table-column prop="number" type="index" label="序号" />
         <el-table-column type="selection" width="55" />
         <el-table-column prop="name1" label="操作人" width="100">
@@ -301,7 +301,7 @@ export default {
       this.tableSearchParams.page = currentPage
       this.requestList()
     },
-    selectionLineChangeHandle(val) {
+    onSelectionChange(val) {
       this.selectionList = val
     },
     // 操作按钮

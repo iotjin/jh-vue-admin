@@ -11,7 +11,7 @@
           </div>
           <el-form ref="formRef" :model="dialogFormData" label-width="120px" :inline="true" :rules="formRules" size="small" label-position="center">
             <!-- class="spp-table spp-theme-top my-table -->
-            <el-table ref="tableRef" class="my-table" :data="dialogFormData.tableData" :stripe="true" :header-cell-style="headerCellStyle" :cell-style="cellStyle" :row-class-name="rowClassName" border @selection-change="selectionLineChangeHandle">
+            <el-table ref="tableRef" class="my-table" :data="dialogFormData.tableData" :stripe="true" :header-cell-style="headerCellStyle" :cell-style="cellStyle" :row-class-name="rowClassName" border @selection-change="onSelectionChange">
               <el-table-column label="">
                 <el-table-column prop="xh" type="index" label="序号" width="80px" />
                 <!-- <el-table-column prop="createDate">
@@ -250,7 +250,7 @@ export default {
     addRedStar(h, { column }) { // 给表头加必选标识
       return [h('span', { style: 'color: red' }, '*'), h('span', ' ' + column.label)]
     },
-    selectionLineChangeHandle(val) {
+    onSelectionChange(val) {
       this.selectionList = val
     },
     onOpenDialog() {

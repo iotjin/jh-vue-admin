@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
 
-    <el-table :data="tableData" :stripe="true" :header-cell-style="headerCellStyle" :cell-style="cellStyle" :row-class-name="rowClassName" border>
+    <el-table :data="tableData" :stripe="true" :header-cell-style="headerCellStyle" :cell-style="cellStyle" :row-class-name="rowClassName" border @expand-change="expandChange">
 
       <el-table-column type="expand">
         <template slot-scope="props">
 
-          <el-table :data="props.row.datas" :stripe="true" :header-cell-style="headerCellStyle" :cell-style="cellStyle" :row-class-name="rowClassName" border>
+          <el-table :data="props.row.datas" :stripe="true" :header-cell-style="headerCellStyle" :cell-style="cellStyle" :row-class-name="rowClassName" border @expand-change="expandChange">
 
             <el-table-column type="expand">
               <template slot-scope="props2">
@@ -126,7 +126,7 @@ export default {
     },
     // 设置row样式
     rowClassName({ row, rowIndex }) {
-      console.log(JSON.stringify(row))
+      // console.log(JSON.stringify(row))
       const data = row
       const res = []
       if (data.datas && data.datas.length > 0) {
@@ -135,6 +135,14 @@ export default {
       } else {
         res.push('row-expand-unhas')
         return res
+      }
+    },
+    // 判断当前行展开状态（通过唯一标识）
+    expandChange(row, rows) {
+      const isExpend = rows.some((r) => r.id === row.id)
+      console.log('isExpend', isExpend)
+      if (isExpend) {
+        // Do some things
       }
     }
   }

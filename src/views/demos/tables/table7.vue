@@ -12,7 +12,9 @@
       :cell-style="cellStyle"
       show-summary
       :summary-method="getSummaries"
-      @selection-change="selectionChangeHandle"
+      @selection-change="onSelectionChange"
+      @select="onSelectionRow"
+      @select-all="onSelectionAllRow"
     >
       <el-table-column v-if="isShowCheckbox" type="selection" width="55" />
       <!-- productName use productPlaceholder field  -->
@@ -142,9 +144,18 @@ export default {
       }
       return newArr
     },
-    selectionChangeHandle(val) {
+    onSelectionChange(val) {
       this.selectionList = val
       console.log(JSON.stringify(this.selectionList))
+    },
+    // 判断当前行是否勾选
+    onSelectionRow(selection, row) {
+      const selected = Boolean(selection.length && selection.indexOf(row) !== -1) // 为true时选中，为 0 时（false）未选中
+      console.log('selected', selected)
+    },
+    // 选择所有行
+    onSelectionAllRow(selection) {
+      // console.log(JSON.stringify(selection))
     },
     // 设置表头样式 - 合并表头
     headerCellStyle({ row, column, rowIndex, columnIndex }) {

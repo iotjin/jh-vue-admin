@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
-    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" :span-method="arraySpanMethod" row-key="id" border>
+    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" :span-method="arraySpanMethod" row-key="id" border @expand-change="expandChange">
 
       <el-table-column type="expand">
         <template slot-scope="props">
 
-          <el-table class="table-in-table" :show-header="false" :data="props.row.datas" style="width: 100%;" row-key="id" :span-method="arraySpanMethod" border>
+          <el-table class="table-in-table" :show-header="false" :data="props.row.datas" style="width: 100%;" row-key="id" :span-method="arraySpanMethod" border @expand-change="expandChange">
 
             <el-table-column type="expand">
               <template slot-scope="props2">
@@ -122,6 +122,14 @@ export default {
         } else if (columnIndex === 1) {
           return [1, 2]
         }
+      }
+    },
+    // 判断当前行展开状态（通过唯一标识）
+    expandChange(row, rows) {
+      const isExpend = rows.some((r) => r.id === row.id)
+      console.log('isExpend', isExpend)
+      if (isExpend) {
+        // Do some things
       }
     }
   }
