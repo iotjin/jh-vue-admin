@@ -11,6 +11,7 @@ import Layout from '@/layout'
 // import chartsRouter from './modules/charts'
 import homesRouter from './modules/homes'
 import tablesRouter from './modules/tables'
+import othersRouter from './modules/others'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -186,6 +187,7 @@ export const asyncRoutes = [
   // chartsRouter,
   homesRouter,
   tablesRouter,
+  othersRouter,
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
