@@ -62,7 +62,10 @@
           </template>
         </el-table-column>
         <el-table-column prop="level" label="级别" sortable width="150">
-          <template slot-scope="scope"> {{ getName(scope.row.level,levelOptions) }} </template>
+          <template slot-scope="scope">
+            <!-- <div class="b-tag-success">{{ getName(scope.row.level,levelOptions) }}</div> -->
+            <div :class="scope.row.level=='1' ? 'b-tag-success' : (scope.row.level=='2' ? 'b-tag-warning' :'b-tag-error') ">{{ getName(scope.row.level,levelOptions) }}</div>
+          </template>
         </el-table-column>
         <el-table-column prop="status" label="处理状态">
           <template slot-scope="scope">
@@ -433,4 +436,38 @@ export default {
   border-radius: 4px;
   word-break: break-word;
 }
+
+.b-tag-warning {
+  display: inline-block;
+  margin: 0.2rem;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: #E6A23C;
+  background: #FDF6EC;
+  border:1px solid #FAECD8;
+  border-radius: 4px;
+}
+
+.b-tag-error {
+  display: inline-block;
+  margin: 0.2rem;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: #F56C6C;
+  background: #FEF0F0;
+  border:1px solid #FDE2E2;
+  border-radius: 4px;
+}
+
+.b-tag-success {
+  display: inline-block;
+  margin: 0.2rem;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: #67C23A;
+  background: #F0F9EB;
+  border:1px solid #E1F3D8;
+  border-radius: 4px;
+}
+
 </style>
