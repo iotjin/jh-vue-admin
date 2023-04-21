@@ -53,7 +53,7 @@
         <!-- <el-table-column prop="content" label="内容" /> -->
         <!-- <el-table-column prop="level" label="级别" /> -->
         <el-table-column prop="content" label="内容" width="200">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-tooltip :visible-arrow="false" class="item" effect="light" :content="scope.row.content" placement="bottom">
               <span class="tab-line-max-show-css">
                 {{ scope.row.content }}
@@ -84,10 +84,10 @@
         <el-table-column prop="updateDate" label="更新时间" width="180" />
 
         <!-- <el-table-column prop="updateDate" label="更新时间" width="150">
-          <template scope="scope"> <span> {{ scope.row.updateDate ? scope.row.updateDate.substring(0, 16) : "" }} </span> </template>
+          <template slot-scope="scope"> <span> {{ scope.row.updateDate ? scope.row.updateDate.substring(0, 16) : "" }} </span> </template>
         </el-table-column> -->
         <!-- <el-table-column label="操作" fixed="right">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="onHandle(scope.row)">处理</el-button>
           </template>
         </el-table-column> -->

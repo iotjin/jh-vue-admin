@@ -34,6 +34,11 @@
         <el-button size="small" type="primary" @click="onClickBtn(2)"><i class="el-icon-edit" />人员变更 </el-button>
         <el-button size="small" type="primary" @click="onClickBtn(3)"><i class="el-icon-edit" />树弹框 </el-button>
 
+        <el-button class="datePicker-btn" size="small" type="primary" @click="onClickShowDatePicker">
+          弹出日期选择器
+          <el-date-picker ref="datePicker" v-model="date" :picker-options="pickerOptions" :editable="false" class="datePicker" value-format="yyyy-MM-dd" format="yyyy年MM月dd日" />
+        </el-button>
+        <span style="margin-left: 15px;">{{ date }}</span>
       </div>
       <el-table ref="tableRef" v-loading="tableLoading" class="spp-table spp-theme-top" :data="tableData" :stripe="true" :header-cell-style="{textAlign: 'center'}" :cell-style="{textAlign: 'center'}" style="width: 100%" @selection-change="onSelectionChange">
         <el-table-column prop="number" type="index" label="序号" />
@@ -42,7 +47,7 @@
         <!-- <el-table-column prop="content" label="内容" /> -->
         <!-- <el-table-column prop="level" label="级别" /> -->
         <el-table-column prop="content" label="内容" width="200">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-tooltip :visible-arrow="false" class="item" effect="light" :content="scope.row.content" placement="bottom">
               <span class="tab-line-max-show-css">
                 {{ scope.row.content }}
@@ -66,7 +71,7 @@
         <el-table-column prop="updateDate" label="更新时间" width="180" />
 
         <el-table-column label="操作" fixed="right">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="onHandle(scope.row)">处理</el-button>
           </template>
         </el-table-column>
@@ -124,7 +129,14 @@ export default {
       // 字典项
       deptOptions: [],
       levelOptions: [],
-      selectId: ''
+      selectId: '',
+      // 弹出日期选择器相关
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() < Date.now()
+        }
+      },
+      date: ''
     }
   },
   mounted() {
@@ -251,6 +263,12 @@ export default {
     },
     onClosedDialog() {
       this.$refs.tableRef.clearSelection()
+    },
+    // 弹出日期选择器
+    onClickShowDatePicker() {
+      this.$refs.datePicker.showPicker()
+      // this.$refs.datePicker.focus()
+      // this.$refs.datePicker.blur()
     }
 
   }
@@ -258,4 +276,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.datePicker-btn {
+  position: relative !important;
+}
+
+.datePicker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  visibility: hidden;
+}
 </style>

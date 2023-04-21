@@ -47,7 +47,7 @@
                 </template>
               </el-table-column>
               <el-table-column prop="content" label="内容" width="200">
-                <template scope="scope">
+                <template slot-scope="scope">
                   <el-tooltip :visible-arrow="false" class="item" effect="light" :content="scope.row.content" placement="bottom">
                     <span class="tab-line-max-show-css">
                       {{ scope.row.content }}
