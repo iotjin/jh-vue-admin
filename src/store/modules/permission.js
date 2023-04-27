@@ -1,4 +1,6 @@
 import { asyncRoutes, constantRoutes } from '@/router'
+import Layout from '@/layout'
+const { deepClone } = require('@/utils')
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -34,6 +36,35 @@ export function filterAsyncRoutes(routes, roles) {
   return res
 }
 
+// 加载路由
+export const loadView = (view) => {
+  // 路由懒加载
+  return (resolve) => require([`@/views/${view}`], resolve)
+  // return (resolve) => require([`@${view}`], resolve)
+}
+
+/**
+ * 通过递归格式化菜单路由 (配置项规则：https://panjiachen.github.io/vue-element-admin-site/zh/guide/essentials/router-and-nav.html#配置项)
+ * @param routes
+ * @param roles
+ */
+export function filterAsyncRoutes2(routes) {
+  const res = []
+  routes.forEach((route) => {
+    const tmp = deepClone(route)
+    if (route.component === 'Layout') {
+      tmp.component = Layout
+    } else if (route.component) {
+      tmp.component = loadView(route.component)
+    }
+    if (route.children && route.children.length > 0) {
+      tmp.children = filterAsyncRoutes2(route.children)
+    }
+    res.push(tmp)
+  })
+  return res
+}
+
 const state = {
   routes: [],
   addRoutes: []
@@ -56,6 +87,13 @@ const actions = {
         accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
       }
       commit('SET_ROUTES', accessedRoutes)
+      resolve(accessedRoutes)
+    })
+  },
+  generateDynamicRoutes({ commit }, menus) {
+    return new Promise(resolve => {
+      const accessedRoutes = filterAsyncRoutes2(menus)
+      commit('SET_ROUTES', accessedRoutes) // Todo: 内部拼接constantRoutes，所以查出来的菜单不用包含constantRoutes
       resolve(accessedRoutes)
     })
   }

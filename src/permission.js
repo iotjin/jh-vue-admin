@@ -35,9 +35,19 @@ router.beforeEach(async(to, from, next) => {
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
           const { roles } = await store.dispatch('user/getInfo')
+          // console.log('roles', JSON.stringify(roles))
 
-          // generate accessible routes map based on roles
-          const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
+          var accessRoutes = []
+
+          if (roles.includes('editor2')) {
+            // 根据服务器获取的用户菜单生成路由
+            const menus = await store.dispatch('user/getUserMenus')
+            const asyncRoutes = await store.dispatch('permission/generateDynamicRoutes', menus)
+            accessRoutes = asyncRoutes
+          } else {
+            // generate accessible routes map based on roles
+            accessRoutes = await store.dispatch('permission/generateRoutes', roles)
+          }
 
           // dynamically add accessible routes
           router.addRoutes(accessRoutes)

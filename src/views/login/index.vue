@@ -47,6 +47,15 @@
         <span style="margin-right:20px;">username: admin</span>
         <span> password: any</span>
       </div>
+      <div class="tips">
+        <span style="margin-right:18px;">username: editor</span>
+        <span> password: any</span>
+      </div>
+      <div class="tips">
+        <span style="margin-right:18px;">username: editor2</span>
+        <span> password: any</span>
+        <span> （动态获取路由） </span>
+      </div>
 
     </el-form>
   </div>

@@ -1,4 +1,5 @@
 import { login, logout, getInfo } from '@/api/user'
+import { getUserMenus } from '@/api/role'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -7,7 +8,8 @@ const getDefaultState = () => {
     token: getToken(),
     name: '',
     avatar: '',
-    roles: []
+    roles: [],
+    menus: []
   }
 }
 
@@ -28,6 +30,9 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_MENUS: (state, menus) => {
+    state.menus = menus
   }
 }
 
@@ -58,7 +63,6 @@ const actions = {
         }
 
         const { roles, name, avatar } = data
-
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
@@ -68,6 +72,26 @@ const actions = {
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  getUserMenus({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      getUserMenus(state.token).then(response => {
+        const { data } = response
+        if (!data) {
+          reject('Verification failed, please Login again.')
+        }
+        const menus = data
+        // roles must be a non-empty array
+        if (!menus || menus.length <= 0) {
+          reject('getMenus: menus must be a non-null array!')
+        }
+        commit('SET_MENUS', menus)
+        resolve(menus)
       }).catch(error => {
         reject(error)
       })
