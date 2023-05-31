@@ -52,6 +52,10 @@ export function filterAsyncRoutes2(routes) {
   const res = []
   routes.forEach((route) => {
     const tmp = deepClone(route)
+    tmp.id = route.id
+    tmp.path = route.code
+    tmp.name = route.code
+    tmp.meta = { title: route.title, icon: route.icon, buttons: route.buttons }
     if (route.component === 'Layout') {
       tmp.component = Layout
     } else if (route.component) {

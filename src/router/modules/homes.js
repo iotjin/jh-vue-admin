@@ -9,7 +9,7 @@ const tableRouter = {
   name: 'Home',
   meta: {
     title: 'Home',
-    icon: 'table'
+    icon: 'el-icon-s-help'
   },
   children: [
     {

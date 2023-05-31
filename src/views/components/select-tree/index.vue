@@ -360,7 +360,7 @@ export default {
     // 过滤节点
     filterNode(value, data) {
       if (!value) return true
-      return data.name.indexOf(value) !== -1
+      return data[this.obj.label].indexOf(value) !== -1
     },
 
     // 树形转为集合
@@ -411,6 +411,7 @@ export default {
 }
 .common-tree {
   overflow: auto;
+  margin-top: 12px;
 }
 .tree-select {
   z-index: 111;

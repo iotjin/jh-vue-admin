@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import { getDictList } from '@/api/system/dict'
 
 export function getListData(params) {
   return request({
@@ -49,33 +50,17 @@ export function exportById(params) {
 }
 
 export function getDictLevel(params) {
-  return request({
-    url: '/v1/api/dict/level',
-    method: 'get',
-    params
-  })
+  return getDictList({ type: 'level' })
 }
 
 export function getDictLeader(params) {
-  return request({
-    url: '/v1/api/dict/leader',
-    method: 'get',
-    params
-  })
+  return getDictList({ type: 'leader' })
 }
 
 export function getDictDept(params) {
-  return request({
-    url: '/v1/api/dict/dept',
-    method: 'get',
-    params
-  })
+  return getDictList({ type: 'dept' })
 }
 
 export function getDictDeptTree(params) {
-  return request({
-    url: '/v1/api/dict/tree',
-    method: 'get',
-    params
-  })
+  return getDictList({ type: 'deptTree' })
 }

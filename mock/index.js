@@ -2,17 +2,19 @@ const Mock = require('mockjs')
 const { param2Obj } = require('./utils')
 
 const user = require('./user')
-const role = require('./role/index')
-const table = require('./table')
-const dict = require('./demos/dict')
-const tables = require('./demos/tables')
+const sysUser = require('./system/user')
+const sysRole = require('./system/role')
+const sysMenu = require('./system/menu')
+const sysDict = require('./system/dict')
+const demoTables = require('./demos/tables')
 
 const mocks = [
   ...user,
-  ...role,
-  ...table,
-  ...dict,
-  ...tables
+  ...sysUser,
+  ...sysRole,
+  ...sysMenu,
+  ...sysDict,
+  ...demoTables
 ]
 
 // for front mock

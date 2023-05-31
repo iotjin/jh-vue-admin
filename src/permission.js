@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import router from './router'
 import store from './store'
 import { Message } from 'element-ui'
@@ -35,14 +36,15 @@ router.beforeEach(async(to, from, next) => {
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
           const { roles } = await store.dispatch('user/getInfo')
-          // console.log('roles', JSON.stringify(roles))
 
           var accessRoutes = []
 
           if (roles.includes('editor2')) {
             // 根据服务器获取的用户菜单生成路由
             const menus = await store.dispatch('user/getUserMenus')
-            const asyncRoutes = await store.dispatch('permission/generateDynamicRoutes', menus)
+            var asyncRoutes = await store.dispatch('permission/generateDynamicRoutes', menus)
+            // 404 page must be placed at the end !!!
+            asyncRoutes = asyncRoutes.concat([{ path: '*', redirect: '/404', hidden: true }])
             accessRoutes = asyncRoutes
           } else {
             // generate accessible routes map based on roles
@@ -81,4 +83,25 @@ router.beforeEach(async(to, from, next) => {
 router.afterEach(() => {
   // finish progress bar
   NProgress.done()
+})
+
+// Use action
+// v-permission="{action:'menu-add'}"
+Vue.directive('permission', {
+  inserted: function(el, binding) {
+    const action = binding.value.action
+    const currentRight = router.currentRoute.meta.buttons
+    if (currentRight) {
+      if (currentRight.indexOf(action) === -1) {
+        // no permission
+        const type = binding.value.effect
+        if (type === 'disabled') {
+          el.disabled = true
+          el.classList.add('is-disabled')
+        } else {
+          el.parentNode.removeChild(el)
+        }
+      }
+    }
+  }
 })

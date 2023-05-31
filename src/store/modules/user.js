@@ -1,5 +1,5 @@
 import { login, logout, getInfo } from '@/api/user'
-import { getUserMenus } from '@/api/role'
+import { getUserMenus } from '@/api/system/menu'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 

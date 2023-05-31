@@ -1,5 +1,5 @@
 const Mock = require('mockjs')
-const dataManager = require('./base')
+const dataManager = require('./tableList')
 
 const data = Mock.mock({
   'items|30': [

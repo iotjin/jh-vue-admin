@@ -5,7 +5,7 @@ const othersRouter = {
   alwaysShow: true,
   component: Layout,
   name: 'Other',
-  meta: { title: 'Other', icon: 'table' },
+  meta: { title: 'Other', icon: 'el-icon-menu' },
   children: [
     {
       path: 'other1',

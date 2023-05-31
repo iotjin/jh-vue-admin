@@ -1,14 +1,24 @@
 # jh-vue-admin
 
+jh-vue-admin - vue极简后台管理系统，支持顶栏和固钉动态切换。[在线预览 https://iotjin.github.io/jh-vue-admin](https://iotjin.github.io/jh-vue-admin)
+<br>
+<br>
+
+
 - 基于[vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)项目`v4.0+` 版本
 - 添加[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)项目`TagsView`功能
 - [vue-element-admin 使用文档](https://panjiachen.github.io/vue-element-admin-site/zh/)
 - 动态权限控制
 - 添加`TopHeader`功能
+- 动态获取菜单路由
+- 基础系统设置模块（用户管理、角色管理、菜单管理、字典管理）
+- 可视化用户角色、菜单权限、按钮权限配置
 
 ## 在线预览
 
   https://iotjin.github.io/jh-vue-admin
+
+<br>
 
 ## vue-admin-template 介绍
 
@@ -27,6 +37,7 @@
   <summary><strong>重要更新</strong></summary>
    
 ```
+* v1.6.0版本，添加系统设置模块
 * v1.5.0版本，添加TopHeader功能
 * v1.4.0版本，添加demos
 * v1.3.0版本，添加tagsView显隐控制
