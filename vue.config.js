@@ -36,7 +36,13 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    // before: require('./mock/mock-server.js')
+    before: process.env.VUE_APP_USE_MOCK === 'true' && require('./mock/mock-server.js')
+    // before: (app) => {
+    //   if (process.env.VUE_APP_USE_MOCK === 'true') {
+    //     require('./mock/mock-server.js')(app)
+    //   }
+    // }
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
