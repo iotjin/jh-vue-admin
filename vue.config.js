@@ -1,6 +1,10 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
+// const webpack = require('webpack')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+// const AutoDllPlugin = require('autodll-webpack-plugin')
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -31,7 +35,8 @@ module.exports = {
   productionSourceMap: false,
   devServer: {
     port: port,
-    open: true,
+    open: true, // 自动打开浏览器
+    // hot: true, // 开启 HMR 功能
     overlay: {
       warnings: false,
       errors: true
@@ -52,6 +57,55 @@ module.exports = {
       alias: {
         '@': resolve('src')
       }
+    },
+    plugins: [
+      // new webpack.HotModuleReplacementPlugin(), // HMR 使用
+      new BundleAnalyzerPlugin({
+        openAnalyzer: false
+      }),
+      // 默认缓存位置：node_modules/.cache路径下
+      new HardSourceWebpackPlugin()
+      // new HardSourceWebpackPlugin({
+      //   cacheDirectory: resolve('node_modules/.cache/hard_source_cache')
+      // })
+      //
+      // 生成dll文件
+      // new AutoDllPlugin({
+      //   inject: true,
+      //   debug: true,
+      //   filename: '[name]_[hash].js',
+      //   path: resolve('dll'),
+      //   entry: {
+      //     vendor: [
+      //       'vue',
+      //       'vue-router',
+      //       'vuex'
+      //     ]
+      //   }
+      // })
+    ],
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          include: path.resolve('src'),
+          exclude: /node_modules/,
+          use: [
+            'thread-loader', // 将后续 loader 放在 worker 池中执行
+            // 耗时的 loader （例如 babel-loader）
+            'babel-loader'
+          ]
+        }
+      ]
+    },
+    // 设置通过cdn引入的库，不打包到vendor中（需要去掉导入的相关代码）, 需要在index.html中引入cdn资源
+    externals: {
+      // vue: 'Vue', // 使用cdn引用element-ui时，必须设置vue和element-ui为外部依赖。
+      // 'element-ui': 'ELEMENT', // 不去 node_modules 中找，而是去找 全局变量 ELEMENT
+      // 'vue-router': 'VueRouter',
+      // axios: 'axios',
+      // echarts: 'echarts'
+      // XLSX: 'XLSX'
     }
   },
   chainWebpack(config) {
@@ -120,8 +174,18 @@ module.exports = {
                 },
                 elementUI: {
                   name: 'chunk-elementUI', // split elementUI into a single package
-                  priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+                  priority: 25, // the weight needs to be larger than libs and app or it will be packaged into libs or app
                   test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // in order to adapt to cnpm
+                },
+                echarts: {
+                  name: 'chunk-echarts', // split echarts into a single package
+                  priority: 30, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+                  test: /[\\/]node_modules[\\/]_?echarts(.*)/ // in order to adapt to cnpm
+                },
+                xlsx: {
+                  name: 'chunk-xlsx', // split xlsx into a single package
+                  priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+                  test: /[\\/]node_modules[\\/](xlsx|file-saver)[\\/]/ // in order to adapt to cnpm
                 },
                 commons: {
                   name: 'chunk-commons',

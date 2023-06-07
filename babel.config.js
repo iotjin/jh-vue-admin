@@ -1,7 +1,24 @@
+const plugins = [
+  [
+    'component',
+    {
+      libraryName: 'element-ui',
+      styleLibraryName: 'theme-chalk'
+    }
+  ]
+]
+
+// remove console.* in production
+if (process.env.NODE_ENV === 'production') {
+  plugins.push('transform-remove-console')
+  // plugins.push(['transform-remove-console', { 'exclude': ['error', 'warn'] }])
+}
+
 module.exports = {
   presets: [
     // https://github.com/vuejs/vue-cli/tree/master/packages/@vue/babel-preset-app
-    '@vue/cli-plugin-babel/preset'
+    '@vue/cli-plugin-babel/preset',
+    ['@babel/preset-env', { 'modules': false }]
   ],
   'env': {
     'development': {
@@ -10,5 +27,6 @@ module.exports = {
       // https://panjiachen.github.io/vue-element-admin-site/guide/advanced/lazy-loading.html
       'plugins': ['dynamic-import-node']
     }
-  }
+  },
+  plugins: plugins
 }

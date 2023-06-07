@@ -4,10 +4,12 @@
 
 <script>
 // import { merge } from 'lodash'
-import * as echarts from 'echarts'
 // import { BASIC_OPTION } from './default_option'
 // import { COLOR_ARRAY } from './color'
 // import ResizeListener from "element-resize-detector";
+
+// import * as echarts from 'echarts' // 全量引入
+import echarts from '@/utils/echarts' // 按需引入
 
 export default {
   name: 'ChartPie',

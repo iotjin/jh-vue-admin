@@ -1,6 +1,12 @@
 // 通用工具类
 
-import lodash from 'lodash'
+/* eslint-disable no-unused-vars */
+// import cloneDeep from 'lodash/cloneDeep' // 按需引入
+// import lodash from 'lodash' // 全量引入
+
+import { cloneDeep } from 'lodash-es' // 按需引入
+// import { throttle, debounce } from 'lodash-es' // 按需引入
+// import lodash from 'lodash-es' // 全量引入
 
 module.exports = {
   Jh_getSafeRandomNum,
@@ -26,11 +32,14 @@ function Jh_getRandomNum(min, max) {
 
 // 深拷贝（使用Lodash库实现 ）
 function deepCopy(objects) {
-  return lodash.cloneDeep(objects)
+  return cloneDeep(objects)
 }
 /*
   lodash库： https://www.lodashjs.com
   安装：npm i --save lodash
+
+  lodash-es库：按需引用打包体积更小
+  npm i --save lodash-es
 */
 
 /*

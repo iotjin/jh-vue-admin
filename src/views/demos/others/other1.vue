@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import lodash from 'lodash'
+import { debounce as debounceLodash, throttle as throttleLodash } from 'lodash-es' // 按需引入
 import { debounce2, throttle } from '@/utils/index'
 
 export default {
@@ -80,7 +80,7 @@ export default {
   },
   created() {
     // 按钮节流 - lodash实现 - 方式2
-    this.onSearch22 = lodash.throttle(this.onSearch22, 3000)
+    this.onSearch22 = throttleLodash(this.onSearch22, 3000)
   },
   mounted() {},
   methods: {
@@ -96,7 +96,7 @@ export default {
     // 搜索框防抖 - lodash实现
     // 不要在debounce里写箭头函数，否则this的指向就是undefined，而不是Vue实例对象。
     // 注意这里若是使用箭头函数的话， this为 undefined https://github.com/vue-styleguidist/vue-docgen-api/issues/23
-    onChange2: lodash.debounce(function() {
+    onChange2: debounceLodash(function() {
       // Do some things
       this.getListByKeyword()
     }, 500),
@@ -107,7 +107,7 @@ export default {
       console.log(JSON.stringify(this.queryParams2))
     },
     // 按钮节流 - lodash实现 - 方式1
-    onSearch2: lodash.throttle(function() {
+    onSearch2: throttleLodash(function() {
       // Do some things
       this.requestList()
     }, 3000),

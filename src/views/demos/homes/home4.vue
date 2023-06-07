@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import * as echarts from 'echarts'
+import echarts from '@/utils/echarts'
 
 export default {
   components: {},

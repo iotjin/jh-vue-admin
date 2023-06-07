@@ -2,7 +2,8 @@ import Vue from 'vue'
 
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
-import ElementUI from 'element-ui'
+// import ElementUI from 'element-ui' // 全局引用
+import ElementUI from '@/utils/element' // 按需引用
 import 'element-ui/lib/theme-chalk/index.css'
 // import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
