@@ -25,8 +25,8 @@
           </el-tab-pane>
         </el-tabs>
         <div slot="footer" class="bs-dialog-footer">
-          <el-button :loading="dialogSubmitBtnLoading" size="small" type="primary" @click="onDialogSubmit()">保存</el-button>
           <el-button size="small" @click="isShowDialog = false">取消</el-button>
+          <el-button :loading="dialogSubmitBtnLoading" size="small" type="primary" @click="onDialogSubmit()">保存</el-button>
         </div>
       </div>
     </el-dialog>
@@ -85,7 +85,7 @@ export default {
       this.$emit('closed', {})
     },
     requestList() {
-      var params = { roleId: this.roleData.id }
+      const params = { roleId: this.roleData.id }
       this.dialogLoading = true
       getMenuTreeListByRoleId(params)
         .then((res) => {

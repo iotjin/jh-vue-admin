@@ -259,11 +259,10 @@ export default {
         item.levelName = this.getDictLabel(item.level, this.levelOptions)
       })
       require.ensure([], () => {
-        var { export_json_to_excel } = require('@/vendor/Export2Excel')
-        var tHeader = ['姓名', '用户名', '员工编号', '部门', '状态', '用户有效期至', '级别', '备注', '手机号']
-        var filterVal = ['name', 'loginName', 'userNumber', 'deptName', 'statusText', 'userExpiryDate', 'levelName', 'notes', 'phone']
-        var list = newTableDate
-        var data = this.formatJson(filterVal, list)
+        const { export_json_to_excel } = require('@/vendor/Export2Excel')
+        const tHeader = ['姓名', '用户名', '员工编号', '部门', '状态', '用户有效期至', '级别', '备注', '手机号']
+        const filterVal = ['name', 'loginName', 'userNumber', 'deptName', 'statusText', 'userExpiryDate', 'levelName', 'notes', 'phone']
+        const data = this.formatJson(filterVal, newTableDate)
         export_json_to_excel(tHeader, data, 'Excel')
       })
     },

@@ -96,7 +96,7 @@ export default {
   },
   methods: {
     requestList() {
-      var params = JSON.parse(JSON.stringify(this.queryParams))
+      const params = JSON.parse(JSON.stringify(this.queryParams))
       console.log(JSON.stringify(params))
 
       this.tableLoading = true

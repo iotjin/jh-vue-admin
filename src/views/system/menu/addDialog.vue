@@ -42,8 +42,8 @@
           </el-form-item>
         </el-form>
         <div v-if="!dialogIsLook" slot="footer" class="bs-dialog-footer">
-          <el-button :loading="dialogSubmitBtnLoading" size="small" type="primary" @click="onDialogSubmit()">保存</el-button>
           <el-button size="small" @click="isShowDialog = false">取消</el-button>
+          <el-button :loading="dialogSubmitBtnLoading" size="small" type="primary" @click="onDialogSubmit()">保存</el-button>
         </div>
       </div>
     </el-dialog>
@@ -225,7 +225,7 @@ export default {
       }
 
       console.log(JSON.stringify(params))
-      const msg = this.dialogType === 'edit' ? '编辑成功!' : '新增成功!'
+      const msg = this.dialogType === 'add' ? '新增成功!' : '编辑成功!'
       this.dialogSubmitBtnLoading = true
       saveMenu(params)
         .then((res) => {
@@ -254,40 +254,21 @@ export default {
 
       console.log(JSON.stringify(params))
       this.dialogSubmitBtnLoading = true
-      if (this.dialogType === 'add') {
-        addMenu(params)
-          .then((res) => {
-            this.dialogSubmitBtnLoading = false
-            if (res.code === 20000) {
-              this.$message.success('新增成功!')
-              this.isShowDialog = false
-              this.$emit('success', {})
-            } else {
-              this.$message.error(res.msg)
-            }
-          })
-          .catch((error) => {
-            this.dialogSubmitBtnLoading = false
-            console.log(JSON.stringify(error))
-          })
-      }
-      if (this.dialogType === 'edit') {
-        editMenu(params)
-          .then((res) => {
-            this.dialogSubmitBtnLoading = false
-            if (res.code === 20000) {
-              this.$message.success('编辑成功!')
-              this.isShowDialog = false
-              this.$emit('success', {})
-            } else {
-              this.$message.error(res.msg)
-            }
-          })
-          .catch((error) => {
-            this.dialogSubmitBtnLoading = false
-            console.log(JSON.stringify(error))
-          })
-      }
+      const msg = this.dialogType === 'add' ? '新增成功!' : '编辑成功!'
+      const p = this.dialogType === 'add' ? addMenu(params) : editMenu(params)
+      p.then((res) => {
+        this.dialogSubmitBtnLoading = false
+        if (res.code === 20000) {
+          this.$message.success(msg)
+          this.isShowDialog = false
+          this.$emit('success', {})
+        } else {
+          this.$message.error(res.msg)
+        }
+      }).catch((error) => {
+        this.dialogSubmitBtnLoading = false
+        console.log(JSON.stringify(error))
+      })
     }
   }
 }

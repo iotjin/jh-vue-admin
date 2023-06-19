@@ -8,14 +8,8 @@ import { cloneDeep } from 'lodash-es' // 按需引入
 // import { throttle, debounce } from 'lodash-es' // 按需引入
 // import lodash from 'lodash-es' // 全量引入
 
-module.exports = {
-  Jh_getSafeRandomNum,
-  Jh_getRandomNum,
-  deepCopy
-}
-
 // 创建 min-max 之间的随机整数
-function Jh_getSafeRandomNum(min, max) {
+export function Jh_getSafeRandomNum(min, max) {
   var seed = new Date().getTime()
   seed = (seed * 9301 + 49297) % 233280
   var rand = seed / 233280.0
@@ -24,14 +18,14 @@ function Jh_getSafeRandomNum(min, max) {
 }
 
 // 创建 min-max 之间的随机整数
-function Jh_getRandomNum(min, max) {
+export function Jh_getRandomNum(min, max) {
   var range = max - min
   var rand = Math.random()
   return Math.floor(rand * (range + 1) + min)
 }
 
 // 深拷贝（使用Lodash库实现 ）
-function deepCopy(objects) {
+export function deepCopy(objects) {
   return cloneDeep(objects)
 }
 /*
@@ -59,9 +53,7 @@ JSON.parse(JSON.stringify(obj))深拷贝的问题
  */
 
 /*  使用
-import CommonUtils from '@/common/commonUtils.js'
-const CommonUtils = require('@/common/commonUtils.js');
 
-CommonUtils.Jh_getRandomNum(1，10)
+import { deepCopy, Jh_getRandomNum } from '@/common/commonUtils'
 
 */

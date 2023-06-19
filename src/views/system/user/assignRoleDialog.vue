@@ -51,8 +51,8 @@
           </el-col>
         </el-row>
         <div slot="footer" class="bs-dialog-footer" style="padding-top: 30px;">
-          <el-button :loading="dialogSubmitBtnLoading" size="small" type="primary" @click="onDialogSubmit()">保存</el-button>
           <el-button size="small" @click="isShowDialog = false">取消</el-button>
+          <el-button :loading="dialogSubmitBtnLoading" size="small" type="primary" @click="onDialogSubmit()">保存</el-button>
         </div>
       </div>
     </el-dialog>
@@ -168,7 +168,7 @@ export default {
     },
     submitRequest() {
       const roleIds = this.tableDataY.map((item) => item.id)
-      var params = { id: this.userData.id, roleIds: roleIds }
+      const params = { id: this.userData.id, roleIds: roleIds }
       console.log(JSON.stringify(params))
       this.dialogSubmitBtnLoading = true
       assignRole(params)

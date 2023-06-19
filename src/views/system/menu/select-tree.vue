@@ -43,7 +43,7 @@ export default {
   },
   watch: {
     selectText: function(val) {
-      var tempValue = this.selectValue || null
+      const tempValue = this.selectValue || null
       this.$emit('change', tempValue)
     },
     value: {

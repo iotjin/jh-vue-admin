@@ -18,7 +18,11 @@ import '@/permission' // permission control
 
 // 引入全局常量
 import constant from '@/common/const'
+// 引入全局方法
+import { deepCopy } from '@/common/commonUtils'
+// 引入全局组件
 import BaseTree from '@/views/components/base-tree'
+import BaseDialog from '@/views/components/base-dialog'
 
 /**
  * If you don't want to use mock-server
@@ -42,9 +46,13 @@ Vue.config.productionTip = false
 
 Vue.prototype.pageGroup = { index: 1, size: 10, sizes: [10, 20, 50, 100] }// 表格分页变量
 
-// 引入全局常量
+// 设置全局常量，use创建的对象，会自动调用对象的install方法，使用：this.GLOBAL.title
 Vue.use(constant)
+// 设置全局方法，使用：this._deepCopy()
+Vue.prototype._deepCopy = deepCopy
+// 设置全局组件, 使用时不需要注册，直接使用，如：<base-tree></base-tree>
 Vue.component('base-tree', BaseTree)
+Vue.component('BaseDialog', BaseDialog)
 
 new Vue({
   el: '#app',
