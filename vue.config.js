@@ -58,7 +58,7 @@ module.exports = {
         '@': resolve('src')
       }
     },
-    plugins: [
+    plugins: process.env.NODE_ENV === 'development' ? [
       // new webpack.HotModuleReplacementPlugin(), // HMR 使用
       new BundleAnalyzerPlugin({
         openAnalyzer: false
@@ -68,22 +68,39 @@ module.exports = {
       // new HardSourceWebpackPlugin({
       //   cacheDirectory: resolve('node_modules/.cache/hard_source_cache')
       // })
-      //
-      // 生成dll文件
-      // new AutoDllPlugin({
-      //   inject: true,
-      //   debug: true,
-      //   filename: '[name]_[hash].js',
-      //   path: resolve('dll'),
-      //   entry: {
-      //     vendor: [
-      //       'vue',
-      //       'vue-router',
-      //       'vuex'
-      //     ]
-      //   }
-      // })
+    ] : [
+      // 去除console.log
+      // new UglifyPlugin(),
+      // 代码压缩
+      // new CompressionPlugin()
     ],
+    // plugins: [
+    //   // new webpack.HotModuleReplacementPlugin(), // HMR 使用
+    //   new BundleAnalyzerPlugin({
+    //     // analyzerMode: 'disabled',
+    //     openAnalyzer: false
+    //   }),
+    //   // 默认缓存位置：node_modules/.cache路径下
+    //   new HardSourceWebpackPlugin()
+    //   // new HardSourceWebpackPlugin({
+    //   //   cacheDirectory: resolve('node_modules/.cache/hard_source_cache')
+    //   // })
+    //   //
+    //   // 生成dll文件
+    //   // new AutoDllPlugin({
+    //   //   inject: true,
+    //   //   debug: true,
+    //   //   filename: '[name]_[hash].js',
+    //   //   path: resolve('dll'),
+    //   //   entry: {
+    //   //     vendor: [
+    //   //       'vue',
+    //   //       'vue-router',
+    //   //       'vuex'
+    //   //     ]
+    //   //   }
+    //   // })
+    // ],
     module: {
       rules: [
         {
