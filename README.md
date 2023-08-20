@@ -20,6 +20,12 @@ jh-vue-admin - vue极简后台管理系统，支持顶栏和固钉动态切换�
 
 <br>
 
+## Vue3版本 - jh-vue3-admin [在线预览](https://iotjin.github.io/jh-vue3-admin)
+
+>[jh-vue3-admin](https://github.com/iotjin/jh-vue3-admin) 是基于 Vue3 + Vite4 + TypeScript5 + Element-Plus + Pinia 等最新主流技术栈构建的后台管理系统前端模板。
+
+<br>
+
 ## vue-admin-template 介绍
 
 > 这是一个极简的 vue admin 管理后台。它只包含了 Element UI & axios & iconfont & permission control & lint，这些搭建后台必要的东西。
