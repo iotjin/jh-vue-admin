@@ -17,7 +17,7 @@ const asyncRoutes = [
     name: 'system',
     // component: Layout,
     component: 'Layout',
-    meta: { title: 'System Settings', icon: 'table' },
+    meta: { title: 'System Settings', icon: 'table', roles: ['admin'] },
     children: [
       {
         path: 'user',
