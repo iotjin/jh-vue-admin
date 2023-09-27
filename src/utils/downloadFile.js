@@ -78,6 +78,9 @@ function getFileName(url) {
 }
 
 export function isImageFormat(suffix) {
+  if (!suffix) {
+    return false
+  }
   suffix = suffix.toLowerCase()
   if (
     suffix.includes('jpg') ||
