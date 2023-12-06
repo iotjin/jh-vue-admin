@@ -1,5 +1,6 @@
 import Vue from 'vue'
 
+import moment from 'moment'
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 // import ElementUI from 'element-ui' // 全局引用
@@ -36,6 +37,8 @@ if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_USE_MOCK === 't
   const { mockXHR } = require('../mock')
   mockXHR()
 }
+
+Vue.prototype.$moment = moment
 
 // set ElementUI lang to EN
 // Vue.use(ElementUI, { locale })

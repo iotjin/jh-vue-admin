@@ -24,6 +24,7 @@
     "file-saver": "^2.0.5",
     "js-cookie": "2.2.0",
     "lodash-es": "^4.17.21",
+    "moment": "^2.29.4",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
     "path-to-regexp": "2.4.0",
