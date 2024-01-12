@@ -36,6 +36,8 @@
         <el-button size="small" type="warning" @click="onExport"><i class="el-icon-download" />导出 </el-button>
         <el-button size="small" type="danger" @click="onDelete"><i class="el-icon-delete" />删除 </el-button>
         <el-button size="small" type="primary" @click="onSelect"><i class="el-icon-plus" />选择 </el-button>
+        <el-button size="small" type="primary" @click="onAddProduct"><i class="el-icon-plus" />添加产品 </el-button>
+
         <!-- <el-button v-permission="{action:'menu-add'}" size="small" type="primary" @click="onAdd"><i class="el-icon-plus" />新增 </el-button>
         <el-button v-permission="{action:'menu-edit'}" size="small" type="primary" @click="onEdit"><i class="el-icon-edit" />编辑 </el-button>
         <el-button v-permission="{action:'menu-export'}" size="small" type="warning" @click="onExport"><i class="el-icon-download" />导出 </el-button>
@@ -108,6 +110,9 @@
     <!-- 选择弹框 -->
     <Dialog2 :is-show.sync="isShowSelectDialog" :dialog-data="dialogData2" @success="requestList" @closed="onClosedDialog" @select="onSelectfinish" />
 
+    <!-- 选择弹框 -->
+    <Dialog3 :is-show.sync="isShowSelectDialog2" :is-refresh="isRefreshDialog" @success="requestList" @closed="onClosedDialog" />
+
   </div>
 </template>
 
@@ -117,11 +122,13 @@ import TimeUtils from '@/utils/timeUtils'
 import { getDictLevel, getListData, getDataById, deleteData } from '@/api/tables/tables'
 import Dialog1 from './dialog1.vue'
 import Dialog2 from './dialog2.vue'
+import Dialog3 from './dialog3.vue'
 
 export default {
   components: {
     Dialog1,
-    Dialog2
+    Dialog2,
+    Dialog3
   },
   data() {
     return {
@@ -147,7 +154,9 @@ export default {
       levelOptions: [],
       selectId: '',
       isShowSelectDialog: false,
-      dialogData2: {}
+      dialogData2: {},
+      isShowSelectDialog2: false,
+      isRefreshDialog: false
     }
   },
   mounted() {
@@ -420,6 +429,14 @@ export default {
     },
     onSelectfinish(value) {
       console.log(JSON.stringify(value))
+    },
+    // 选择弹框相关
+    onAddProduct() {
+      this.isRefreshDialog = false
+      this.$nextTick(() => {
+        this.isRefreshDialog = true
+      })
+      this.isShowSelectDialog2 = true
     }
   }
 }
