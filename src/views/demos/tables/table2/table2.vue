@@ -37,6 +37,7 @@
         <el-button size="small" type="danger" @click="onDelete"><i class="el-icon-delete" />删除 </el-button>
         <el-button size="small" type="primary" @click="onSelect"><i class="el-icon-plus" />选择 </el-button>
         <el-button size="small" type="primary" @click="onAddProduct"><i class="el-icon-plus" />添加产品 </el-button>
+        <el-button size="small" type="primary" @click="onClickDrag()"><i class="el-icon-plus" />拖拽排序 </el-button>
 
         <!-- <el-button v-permission="{action:'menu-add'}" size="small" type="primary" @click="onAdd"><i class="el-icon-plus" />新增 </el-button>
         <el-button v-permission="{action:'menu-edit'}" size="small" type="primary" @click="onEdit"><i class="el-icon-edit" />编辑 </el-button>
@@ -94,9 +95,10 @@
           </template>
         </el-table-column> -->
 
-        <el-table-column fixed="right" label="操作" width="120">
+        <el-table-column fixed="right" label="操作" width="200">
           <template slot-scope="scope">
             <el-button size="mini" icon="el-icon-edit-outline" @click="rowEdit(scope.row)" />
+            <el-button size="mini" icon="el-icon-rank" @click="onClickDrag(scope.row)" />
             <el-button size="mini" icon="el-icon-delete" type="danger" @click="rowDelete(scope.row)" />
           </template>
         </el-table-column>
@@ -113,6 +115,9 @@
     <!-- 选择弹框 -->
     <Dialog3 :is-show.sync="isShowSelectDialog2" :is-refresh="isRefreshDialog" @success="requestList" @closed="onClosedDialog" />
 
+    <!-- 拖拽排序 -->
+    <Dialog4 :dialog-type="dialogType" :is-show.sync="isShowDragDialog" :dialog-data="dialogFormData" @success="requestList" @closed="onClosedDialog" />
+
   </div>
 </template>
 
@@ -123,12 +128,14 @@ import { getDictLevel, getListData, getDataById, deleteData } from '@/api/tables
 import Dialog1 from './dialog1.vue'
 import Dialog2 from './dialog2.vue'
 import Dialog3 from './dialog3.vue'
+import Dialog4 from './dialog4.vue'
 
 export default {
   components: {
     Dialog1,
     Dialog2,
-    Dialog3
+    Dialog3,
+    Dialog4
   },
   data() {
     return {
@@ -156,7 +163,8 @@ export default {
       isShowSelectDialog: false,
       dialogData2: {},
       isShowSelectDialog2: false,
-      isRefreshDialog: false
+      isRefreshDialog: false,
+      isShowDragDialog: false
     }
   },
   mounted() {
@@ -437,6 +445,28 @@ export default {
         this.isRefreshDialog = true
       })
       this.isShowSelectDialog2 = true
+    },
+    onClickDrag(row) {
+      if (row) {
+        this.handelDialogSetData(row)
+        this.dialogType = 'edit'
+        this.isShowDragDialog = true
+      } else {
+        this.dialogFormData = {
+          name1: '',
+          content: '',
+          level: '',
+          createDate: '',
+          updateDate: '',
+          isUse: '',
+          status: '',
+          phone: '',
+          money: '',
+          age: ''
+        }
+        this.dialogType = 'add'
+        this.isShowDragDialog = true
+      }
     }
   }
 }
