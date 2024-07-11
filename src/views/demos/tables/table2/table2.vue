@@ -78,6 +78,10 @@
           </template>
         </el-table-column>
         <el-table-column prop="isUse" label="启用">
+          <template slot="header">
+            <div>启用</div>
+            <div>状态</div>
+          </template>
           <template slot-scope="scope"> {{ scope.row.isUse==0 ?'停用':'启用' }} </template>
         </el-table-column>
         <el-table-column prop="phone" label="手机号" width="200" />
@@ -100,6 +104,7 @@
             <el-button size="mini" icon="el-icon-edit-outline" @click="rowEdit(scope.row)" />
             <el-button size="mini" icon="el-icon-rank" @click="onClickDrag(scope.row)" />
             <el-button size="mini" icon="el-icon-delete" type="danger" @click="rowDelete(scope.row)" />
+            <el-button :loading="cellBtnLoading === scope.row.id" style="margin:6px 0px 0px;" size="mini" type="success" @click="onClickRowPrint(scope.row)">Print</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -164,7 +169,8 @@ export default {
       dialogData2: {},
       isShowSelectDialog2: false,
       isRefreshDialog: false,
-      isShowDragDialog: false
+      isShowDragDialog: false,
+      cellBtnLoading: ''
     }
   },
   mounted() {
@@ -418,6 +424,12 @@ export default {
       }).catch((error) => {
         console.log(JSON.stringify(error))
       })
+    },
+    onClickRowPrint(row) {
+      this.cellBtnLoading = row.id
+      setTimeout(() => {
+        this.cellBtnLoading = ''
+      }, 1500)
     },
     // 弹框相关
     // 对弹框数据赋值

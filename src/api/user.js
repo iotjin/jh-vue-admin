@@ -22,3 +22,10 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function getCheckUpgrade() {
+  return request({
+    url: '/v1/api/checkUpgrade',
+    method: 'get'
+  })
+}

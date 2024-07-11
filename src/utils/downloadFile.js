@@ -77,7 +77,12 @@ function getFileName(url) {
   return url.substring(url.lastIndexOf('/') + 1)
 }
 
-export function isImageFormat(suffix) {
+export function isImageFormat(fileName) {
+  var tempArr = fileName.split('.')
+  if (tempArr.length === 1) {
+    return false
+  }
+  var suffix = tempArr[tempArr.length - 1]
   if (!suffix) {
     return false
   }
@@ -89,7 +94,8 @@ export function isImageFormat(suffix) {
     suffix.includes('png') ||
     suffix.includes('gif') ||
     suffix.includes('webp') ||
-    suffix.includes('svg')
+    suffix.includes('svg') ||
+    suffix.includes('jfif')
   ) {
     return true
   }

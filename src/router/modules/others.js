@@ -20,6 +20,13 @@ const othersRouter = {
       component: () => import('@/views/demos/others/other2'),
       meta: { title: 'other2' },
       hidden: false
+    },
+    {
+      path: 'other3',
+      name: 'other3',
+      component: () => import('@/views/demos/others/other3'),
+      meta: { title: 'other3' },
+      hidden: false
     }
   ]
 }

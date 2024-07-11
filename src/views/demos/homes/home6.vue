@@ -293,12 +293,12 @@ export default {
       return newChartData
     },
     // 随机生成颜色
-    getRandomColor() {
+    getRandomColor(alpha = 1) {
       let color = ''
       const r = Math.floor(Math.random() * 256)
       const g = Math.floor(Math.random() * 256)
       const b = Math.floor(Math.random() * 256)
-      color = `rgb(${r},${g},${b})`
+      color = `rgba(${r}, ${g}, ${b}, ${alpha})`
       return color // 所有方法的拼接都可以用ES6新特性`其他字符串{$变量名}`替换
     },
     getRandomColor2() {
