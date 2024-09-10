@@ -34,6 +34,7 @@ module.exports = {
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
+    https: false,
     port: port,
     open: true, // 自动打开浏览器
     // hot: true, // 开启 HMR 功能

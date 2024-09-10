@@ -3,11 +3,13 @@
     <!-- dialog -->
     <el-dialog
       ref="dialogRef"
+      v-drag-dialog
       v-bind="$attrs"
       :title="dialogTitle"
       :visible.sync="isShowDialog"
       :top="top"
       :width="width"
+      :fullscreen="isFullscreen"
       :append-to-body="appendToBody"
       :destroy-on-close="destroyOnClose"
       :close-on-click-modal="closeOnClickModal"
@@ -15,12 +17,22 @@
       @opened="onOpenedDialog"
       @closed="onClosedDialog"
     >
+      <!-- 自定义header -->
+      <template slot="title">
+        <div style="display:flex;justify-content: space-between;">
+          <div class="el-dialog__title"> {{ dialogTitle }} </div>
+          <button type="button" class="el-dialog__headerbtn" style="margin-right: 25px;" @click="onClickToggleFull">
+            <i v-if="!isFullscreen" class="el-icon-full-screen" />
+            <svg-icon v-if="isFullscreen" icon-class="exit-fullscreen" />
+          </button>
+        </div>
+      </template>
       <div class="bs-dialog">
         <slot />
-        <div v-if="isShowFooter" slot="footer" class="bs-dialog-footer">
-          <el-button size="small" @click="onDialogCancel()"> {{ cancelText }} </el-button>
-          <el-button :loading="dialogSubmitBtnLoading" size="small" type="primary" @click="onDialogSubmit()"> {{ confirmText }} </el-button>
-        </div>
+      </div>
+      <div v-if="isShowFooter" slot="footer" class="bs-dialog-footer">
+        <el-button size="small" @click="onDialogCancel()"> {{ cancelText }} </el-button>
+        <el-button :loading="dialogSubmitBtnLoading" size="small" type="primary" @click="onDialogSubmit()"> {{ confirmText }} </el-button>
       </div>
     </el-dialog>
   </div>
@@ -45,7 +57,7 @@ export default {
     closeOnClickModal: { type: Boolean, default: false },
     // Dialog 自身是否插入至 body 元素上。嵌套的 Dialog 必须指定该属性并赋值为 true
     appendToBody: { type: Boolean, default: false },
-    // Dialog 关闭时是否销毁内部元素
+    // Dialog 关闭时是否销毁内部元素，设置ture后拖动指令会失效
     destroyOnClose: { type: Boolean, default: false }
   },
   data() {
@@ -53,6 +65,7 @@ export default {
       // 弹框相关
       dialogTitle: '提示',
       isShowDialog: false,
+      isFullscreen: false,
       dialogSubmitBtnLoading: false
     }
   },
@@ -78,10 +91,10 @@ export default {
     }
   },
   created() {
-    console.log('created', JSON.stringify())
+    // console.log('base-dialog created')
   },
   beforeDestroy() {
-    console.log('beforeDestroy')
+    // console.log('base-dialog beforeDestroy')
   },
   methods: {
     // 弹框相关
@@ -108,11 +121,17 @@ export default {
     // this.$refs.dialogRef.showSubmitBtnLoading(true)
     showSubmitBtnLoading(isShow = false) {
       this.dialogSubmitBtnLoading = isShow
+    },
+    onClickToggleFull() {
+      this.isFullscreen = !this.isFullscreen
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.bs-dialog-footer {
+  text-align: center;
+}
 </style>
 

@@ -6,6 +6,7 @@ const sysUser = require('./system/user')
 const sysRole = require('./system/role')
 const sysMenu = require('./system/menu')
 const sysDict = require('./system/dict')
+const file = require('./file/file')
 const demoTables = require('./demos/tables')
 
 const mocks = [
@@ -14,6 +15,7 @@ const mocks = [
   ...sysRole,
   ...sysMenu,
   ...sysDict,
+  ...file,
   ...demoTables
 ]
 

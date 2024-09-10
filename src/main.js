@@ -24,6 +24,8 @@ import { deepCopy } from '@/common/commonUtils'
 // 引入全局组件
 import BaseTree from '@/views/components/base-tree'
 import BaseDialog from '@/views/components/base-dialog'
+// 自定义指令
+import { setupDirective } from '@/directives/index'
 
 /**
  * If you don't want to use mock-server
@@ -56,6 +58,9 @@ Vue.prototype._deepCopy = deepCopy
 // 设置全局组件, 使用时不需要注册，直接使用，如：<base-tree></base-tree>
 Vue.component('base-tree', BaseTree)
 Vue.component('BaseDialog', BaseDialog)
+
+// 设置全局指令
+setupDirective(Vue)
 
 new Vue({
   el: '#app',

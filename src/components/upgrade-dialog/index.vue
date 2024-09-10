@@ -220,9 +220,16 @@ export default {
 }
 
 // pc
-@media screen and (min-width: 750px), (min-device-width: 750px) {
+@media screen and (min-width: 1024px), (min-device-width: 1024px) {
   .upgrade-dialog ::v-deep .el-dialog {
     width: max(30%, 300px);
+  }
+}
+
+// 平板
+@media screen and (min-width: 750px) and (max-width: 1024px), (min-device-width: 750px) and (max-device-width: 1024px) {
+  .upgrade-dialog ::v-deep .el-dialog {
+    width: max(50%, 300px);
   }
 }
 // 移动端

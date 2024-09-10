@@ -101,3 +101,33 @@ export function isImageFormat(fileName) {
   }
   return false
 }
+
+export function isExcelFormat(fileName) {
+  var tempArr = fileName.split('.')
+  if (tempArr.length === 1) {
+    return false
+  }
+  var suffix = tempArr[tempArr.length - 1]
+  if (!suffix) {
+    return false
+  }
+  suffix = suffix.toLowerCase()
+  if (
+    suffix.includes('xls') ||
+    suffix.includes('xlsx') ||
+    suffix.includes('xltx') ||
+    suffix.includes('xltm') ||
+    suffix.includes('csv')
+  ) {
+    return true
+  }
+  return false
+}
+
+export function openNewWindowTab(fileUrl) {
+  if (fileUrl.includes('.')) {
+    window.open(fileUrl)
+  } else {
+    Vue.prototype.$message.warning('The file format is not supported')
+  }
+}
