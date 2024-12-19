@@ -88,7 +88,13 @@ const tableRouter = {
       path: 'table13',
       component: () => import('@/views/demos/tables/table13'),
       name: 'table13',
-      meta: { title: 'table13' }
+      meta: { title: 'table13 - 自定义滚动条' }
+    },
+    {
+      path: 'table14',
+      component: () => import('@/views/demos/tables/table14'),
+      name: 'table14',
+      meta: { title: 'table14' }
     }
   ]
 }

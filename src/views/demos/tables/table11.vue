@@ -38,11 +38,14 @@
         <el-table-column prop="phone" label="手机号" width="200" />
         <el-table-column prop="money" label="金额" />
         <el-table-column prop="age" label="年龄" />
-        <el-table-column prop="createDate" label="创建时间" width="180" />
-        <el-table-column prop="updateDate" label="更新时间" width="180" />
+        <el-table-column prop="createDate" label="创建时间" width="580" />
+        <el-table-column prop="updateDate" label="更新时间" width="580" />
         <el-table-column fixed="right" label="操作" width="200">
-          <template>
+          <template slot-scope="scope">
             <el-button size="mini" icon="el-icon-edit-outline" />
+            <!-- scope.$index 从0开始 -->
+            <el-button size="small" type="warning" @click="tableData.splice(scope.$index,1)">Remove</el-button>
+            <el-button size="small" type="warning" @click="onClickRemoveRow(scope.row)">Remove</el-button>
             <el-button size="mini" icon="el-icon-delete" type="danger" />
           </template>
         </el-table-column>
@@ -154,6 +157,11 @@ export default {
     },
     onEnd(evt) {
       console.log('onEnd', evt)
+    },
+    onClickRemoveRow(row) {
+    // this.tableData.splice(this.tableData.indexOf(row), 1)
+      // 通过row内的id字段删除某一行数据
+      this.tableData.splice(this.tableData.findIndex(item => item.id === row.id), 1)
     }
   }
 }
