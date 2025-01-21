@@ -94,7 +94,13 @@ const tableRouter = {
       path: 'table14',
       component: () => import('@/views/demos/tables/table14'),
       name: 'table14',
-      meta: { title: 'table14' }
+      meta: { title: 'table14 - 列隐藏/排序' }
+    },
+    {
+      path: 'table15',
+      component: () => import('@/views/demos/tables/table15'),
+      name: 'table15',
+      meta: { title: 'table15' }
     }
   ]
 }
