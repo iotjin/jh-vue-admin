@@ -39,6 +39,18 @@ const componentsRouter = {
       component: () => import('@/views/demos/components/debounce'),
       name: 'debounce',
       meta: { title: 'debounce directive' }
+    },
+    {
+      path: 'markdown',
+      component: () => import('@/views/demos/components/markdown'),
+      name: 'markdown',
+      meta: { title: 'Markdown' }
+    },
+    {
+      path: 'wangEditor',
+      component: () => import('@/views/demos/components/wangEditor'),
+      name: 'wangEditor',
+      meta: { title: 'WangEditor' }
     }
   ]
 }
