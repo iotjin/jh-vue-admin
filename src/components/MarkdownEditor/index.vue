@@ -203,3 +203,10 @@ export default {
 }
 </script>
 
+<style lang="scss" scoped>
+// wysiwyg模式 content 滚动时层级调整
+::v-deep .toastui-editor-contents {
+  z-index: 0 !important;
+}
+</style>
+

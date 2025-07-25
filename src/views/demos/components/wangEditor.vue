@@ -2,7 +2,7 @@
 <template>
   <div class="app-container">
     <!-- 编辑器区域 -->
-    <WangEditor v-model="htmlValue" style="height: calc(100vh - 180px)" />
+    <WangEditor v-model="htmlValue" style="z-index: 99999; height: calc(100vh - 180px)" />
 
     <!-- 原始 HTML 展示区域 -->
     <div style="margin-top: 20px">

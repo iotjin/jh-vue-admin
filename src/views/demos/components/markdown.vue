@@ -44,6 +44,9 @@
         <el-button style="margin-top:80px;" type="primary" icon="el-icon-document" @click="getHtmlContent">
           Get HTML
         </el-button>
+        <el-button style="margin-top:80px;" type="primary" icon="el-icon-document" @click="testUnsafeHtml">
+          Get unsafe HTML
+        </el-button>
         <el-button style="margin-top:80px;" type="primary" icon="el-icon-document" @click="getMarkdownContent">
           Get Markdown - 组件内
         </el-button>
@@ -72,6 +75,13 @@
       <div id="15" />
     </el-dialog>
 
+    <el-dialog title="Unsafe HTML内容预览" :visible.sync="isShowDialog4" destroy-on-close>
+      <div v-html="handleHtmlValue" />
+      <p>注意：实际应用中请确保使用 DOMPurify 等工具来清理不安全的 HTML。</p>
+      <p>DOMPurify是一个开源的基于DOM的快速XSS净化工具。输入HTML元素,然后通过DOM解析递归元素节点,进行净化,输出安全的HTML</p>
+      <p>const safeHtmlText = DOMPurify.sanitize(htmlValue) </p>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -79,6 +89,7 @@
 import MarkdownEditor from '@/components/MarkdownEditor'
 import '@toast-ui/editor/dist/toastui-editor.css' // editor style
 import Editor from '@toast-ui/editor'
+import DOMPurify from 'dompurify'
 
 const content = `
 
@@ -182,7 +193,22 @@ export default {
       ],
       isShowDialog: false,
       isShowDialog2: false,
-      isShowDialog3: false
+      markdownText: `# Hello, Vue and Marked.js!
+
+<p><span style="color: #ce9178;">This is test</span></p>
+
+This is a sample markdown text. `,
+
+      isShowDialog3: false,
+      isShowDialog4: false,
+      unsafeHtml1: '<img src="x" onerror="alert(\'XSS 测试\')">',
+      unsafeHtml2: `
+        <p>普通文本</p>
+        <script>alert("XSS 攻击模拟")<\/script>
+        <a href="javascript:alert(\'XSS 链接\')">点击我</a>
+        <img src="x" onerror="alert('又来一次 XSS！')">
+      `,
+      handleHtmlValue: ''
     }
   },
   computed: {
@@ -206,6 +232,14 @@ export default {
       console.log('---------- htmlValue ----------')
       console.log(this.htmlValue)
       this.isShowDialog = true
+    },
+    testUnsafeHtml() {
+      // 直接使用 unsafeHtml1 和 unsafeHtml2
+      this.handleHtmlValue = this.unsafeHtml2
+      this.handleHtmlValue = DOMPurify.sanitize(this.unsafeHtml2)
+      console.log('---------- handleHtmlValue ----------')
+      console.log(this.handleHtmlValue)
+      this.isShowDialog4 = true
     },
     getMarkdownContent() {
       this.markdownValue = this.$refs.markdownEditorRef2.getValue()
@@ -237,6 +271,44 @@ export default {
     }
   }
 }
+
+/*
+
+  https://github.com/markedjs/marked
+
+npm install marked --save
+
+import { marked } from 'marked'
+
+    convertToHtml(text) {
+      // const rawMarkdown = `Hello\n**这是一段加粗的文字**\n\n- 项目1\n- 项目2`
+      const rawMarkdown = `# Hello, Vue and Marked.js!
+
+This is a sample markdown text.`;
+      const html = marked.parse(rawMarkdown)
+      console.log('html', JSON.stringify(html))
+      return html
+    },
+
+    另外：
+
+    Markdown 解析后是 HTML，为防止 XSS 攻击，可以加一层 DOMPurify
+
+    https://github.com/cure53/DOMPurify
+    DOMPurify是一个开源的基于DOM的快速XSS净化工具。输入HTML元素,然后通过DOM解析递归元素节点,进行净化,输出安全的HTML
+
+    npm install dompurify --save
+
+    import DOMPurify from 'dompurify'
+
+    const safeHtmlText = DOMPurify.sanitize(marked.parse(markdownText))
+
+     另外一种
+     npm install vue-dompurify-html
+     <div v-dompurify-html="userProvidedHTML">
+
+*/
+
 </script>
 
 <style lang="scss" scoped>
