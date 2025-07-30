@@ -280,6 +280,10 @@ npm install marked --save
 
 import { marked } from 'marked'
 
+  marked.use({
+    breaks: true, // 对换行符进行转换，比如有\n的地方会转换成<br>
+  });
+
     convertToHtml(text) {
       // const rawMarkdown = `Hello\n**这是一段加粗的文字**\n\n- 项目1\n- 项目2`
       const rawMarkdown = `# Hello, Vue and Marked.js!
