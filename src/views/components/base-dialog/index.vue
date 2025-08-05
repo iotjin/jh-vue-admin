@@ -86,8 +86,11 @@ export default {
     isShowDialog: function(val) {
       this.$emit('update:isShow', val) // isShowDialog改变时同步父组件isShow的值
     },
-    title: function(val) {
-      this.dialogTitle = val.length ? val : this.dialogTitle
+    title: {
+      handler(val) {
+        this.dialogTitle = val.length ? val : this.dialogTitle
+      },
+      immediate: true
     }
   },
   created() {
