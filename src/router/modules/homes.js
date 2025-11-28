@@ -53,6 +53,12 @@ const tableRouter = {
       component: () => import('@/views/demos/homes/home7'),
       name: 'home7',
       meta: { title: 'Home7' }
+    },
+    {
+      path: 'home8',
+      component: () => import('@/views/demos/homes/home8'),
+      name: 'home8',
+      meta: { title: 'Home8' }
     }
   ]
 }
