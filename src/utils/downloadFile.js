@@ -131,3 +131,62 @@ export function openNewWindowTab(fileUrl) {
     Vue.prototype.$message.warning('The file format is not supported')
   }
 }
+
+/**
+ * 打印PDF文件
+ * @param {ArrayBuffer} data PDF文件的二进制数据
+ * @returns {Promise} 打印完成后的Promise对象
+ */
+export function previewPrintPDFFile(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      const blob = new Blob([data], { type: 'application/pdf' })
+      const url = window.URL.createObjectURL(blob)
+
+      const iframe = document.createElement('iframe')
+      iframe.style.position = 'fixed'
+      iframe.style.right = '0'
+      iframe.style.bottom = '0'
+      iframe.style.width = '0'
+      iframe.style.height = '0'
+      iframe.style.border = '0'
+      iframe.src = url
+
+      // iframe.onload = () => {
+      //   try {
+      //     iframe.contentWindow.focus()
+      //     iframe.contentWindow.print()
+
+      //     // 延迟清理资源（避免部分浏览器打印失败）
+      //     setTimeout(() => {
+      //       window.URL.revokeObjectURL(url)
+      //       document.body.removeChild(iframe)
+      //       resolve()
+      //     }, 1000)
+      //   } catch (err) {
+      //     reject(err)
+      //   }
+      // }
+
+      iframe.onload = () => {
+        try {
+          const win = iframe.contentWindow
+          win.onafterprint = () => {
+            window.URL.revokeObjectURL(url)
+            document.body.removeChild(iframe)
+            resolve()
+          }
+
+          win.focus()
+          win.print()
+        } catch (err) {
+          reject(err)
+        }
+      }
+
+      document.body.appendChild(iframe)
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
