@@ -19,7 +19,7 @@
       </el-form-item>
       <el-form-item>
         <span class="bs-form-label" style="width:100px"> <i class="icon">创建时间:</i> </span>
-        <el-date-picker v-model="dateRange" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd" format="yyyy年MM月dd日" />
+        <el-date-picker v-model="dateRange" type="daterange" popper-class="verticalDateRangePicker" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd" format="yyyy年MM月dd日" />
       </el-form-item>
       <el-form-item>
         <el-button class="bs-form-btn" size="small" type="primary" @click="onSearch">查询</el-button>

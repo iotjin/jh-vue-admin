@@ -1,0 +1,106 @@
+
+
+// el-date-picker 时间范围选择器
+// <el-date-picker v-model="dateRange" type="daterange" popper-class="verticalDateRangePicker" 
+@media screen and (max-width: 768px) {
+  .verticalDateRangePicker {
+    width: 85% !important;
+
+    // 顶层  和 .el-picker-panel 同级
+    // .el-date-range-picker {
+    //   width: 85% !important;
+    // }
+
+    // 第二层
+    // .el-picker-panel__body-wrapper {
+    //   display: flex;
+    //   flex-direction: column;
+    //   align-items: center;
+    // }
+
+    // 第三层 上-快速选择
+    .el-picker-panel__sidebar {
+      width: 100%;
+      position: relative;
+    }
+    // 第三层 下-日期范围table
+    .el-picker-panel__body {
+      margin-left: 0 !important;
+      display: flex;
+      flex-direction: column;
+      min-width: auto !important;
+    }
+    // 第四层 和 el-picker-panel__content 同级
+    .el-date-range-picker__content {
+      width: 100% !important;
+      // margin: 0px;
+      // padding: 5px;
+      // background: red;
+    }
+    .el-date-range-picker__content.is-left {
+      padding-bottom: 0px;
+      // background: orange;
+    }
+    // .el-date-range-picker__content.is-right {
+    //   padding-top: 0px;
+    //   // background: yellow;
+    // }
+    .el-date-table th {
+      padding: 0px;
+    }
+    .el-date-table td {
+      padding: 0px;
+    }
+
+    // width: 300px !important;
+    // .el-picker-panel__body-wrapper {
+    //   display: flex;
+    //   flex-direction: column;
+    //   align-items: center;
+    // }
+    // .el-picker-panel__sidebar {
+    //   position: relative;
+    //   width: 100%;
+    // }
+    // .el-picker-panel__body {
+    //   margin-left: 0!important;
+    //   display: flex;
+    //   flex-direction: column;
+    //   min-width: auto!important;
+    // }
+    // .el-picker-panel__content {
+    //   width: 100%;
+    // }
+  }
+}
+
+
+// 不需要设置popper-class
+@media screen and (max-width: 768px) {
+  .el-date-range-picker {
+    width: 85% !important;
+  }
+
+  .el-picker-panel__sidebar {
+    width: 100%;
+    position: relative;
+  }
+  .el-picker-panel__body {
+    margin-left: 0 !important;
+    display: flex;
+    flex-direction: column;
+    min-width: auto !important;
+  }
+  .el-date-range-picker__content {
+    width: 100% !important;
+  }
+  .el-date-range-picker__content.is-left {
+    padding-bottom: 0px;
+  }
+  .el-date-table th {
+    padding: 0px;
+  }
+  .el-date-table td {
+    padding: 0px;
+  }
+}
