@@ -1,7 +1,8 @@
-// element-ui 按需引入
-// 注：完整组件列表以 components.json （引用版本的）为准
-// https://github.com/ElemeFE/element/blob/master/components.json
+// element-ui 按需引入（与 package.json 中 element-ui 版本一致，当前 2.15.14）
+// 注：完整组件列表以对应版本的 components.json 为准
+// https://github.com/ElemeFE/element/blob/v2.15.14/components.json
 
+import CollapseTransition from 'element-ui/lib/transitions/collapse-transition'
 import {
   Pagination,
   Dialog,
@@ -79,7 +80,15 @@ import {
   CascaderPanel,
   Avatar,
   Drawer,
+  Statistic,
   Popconfirm,
+  Skeleton,
+  SkeletonItem,
+  Empty,
+  Descriptions,
+  DescriptionsItem,
+  Result,
+  InfiniteScroll,
   // 单独设置
   Loading,
   MessageBox,
@@ -164,7 +173,15 @@ const components = [
   CascaderPanel,
   Avatar,
   Drawer,
-  Popconfirm
+  Statistic,
+  Popconfirm,
+  Skeleton,
+  SkeletonItem,
+  Empty,
+  Descriptions,
+  DescriptionsItem,
+  Result,
+  CollapseTransition
 ]
 
 const element = {
@@ -173,7 +190,7 @@ const element = {
       Vue.component(component.name, component)
     })
 
-    // 单独设置
+    Vue.use(InfiniteScroll)
     Vue.use(Loading.directive)
     Vue.prototype.$loading = Loading.service
     Vue.prototype.$msgbox = MessageBox

@@ -5,6 +5,8 @@
     <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
+      <nav-search v-if="device !== 'mobile'" class="nav-search" />
+
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
@@ -35,17 +37,16 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import NavSearch from '@/layout/components/NavSearch'
 
 export default {
   components: {
     Breadcrumb,
-    Hamburger
+    Hamburger,
+    NavSearch
   },
   computed: {
-    ...mapGetters([
-      'sidebar',
-      'avatar'
-    ])
+    ...mapGetters(['sidebar', 'avatar', 'device'])
   },
   methods: {
     toggleSideBar() {
@@ -65,18 +66,18 @@ export default {
   overflow: hidden;
   position: relative;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 
   .hamburger-container {
     line-height: 46px;
     height: 100%;
     float: left;
     cursor: pointer;
-    transition: background .3s;
-    -webkit-tap-highlight-color:transparent;
+    transition: background 0.3s;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
-      background: rgba(0, 0, 0, .025)
+      background: rgba(0, 0, 0, 0.025);
     }
   }
 
@@ -103,11 +104,27 @@ export default {
 
       &.hover-effect {
         cursor: pointer;
-        transition: background .3s;
+        transition: background 0.3s;
 
         &:hover {
-          background: rgba(0, 0, 0, .025)
+          background: rgba(0, 0, 0, 0.025);
         }
+      }
+    }
+
+    .nav-search {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 50px;
+      padding: 0 20px;
+      color: #5a5e66;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &:hover {
+        background: rgb(249 250 251 / 100%);
       }
     }
 
