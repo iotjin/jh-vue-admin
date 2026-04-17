@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div @click="showDialog = true">
     <el-tooltip placement="bottom" content="搜索">
-      <div class="item-center" @click="showDialog = true">
+      <div class="item-center">
         <i class="el-icon-search nav-search-trigger" />
       </div>
     </el-tooltip>
@@ -9,7 +9,7 @@
       <el-input v-model="searchKey" placeholder="输入菜单名称搜索" size="large" clearable prefix-icon="el-icon-search" />
 
       <div v-if="searchList.length > 0" class="search-list">
-        <div v-for="(item, index) in searchList" :key="item.name || index" class="search-item item-center" :class="{ active: index === activeIndex }" @click="handleRedirect" @mouseenter="handleMouseenter(index)">
+        <div v-for="(item, index) in searchList" :key="'nav-search-' + index" ref="searchItem" class="search-item item-center" :class="{ active: index === activeIndex }" @click="handleRedirect" @mouseenter="handleMouseenter(index)">
           <div class="item-center">
             <i v-if="isElIcon(item.meta.icon)" :class="[item.meta.icon, 'search-item-icon']" />
             <svg-icon v-else-if="item.meta.icon" :icon-class="item.meta.icon" class="search-item-svg" />
@@ -61,6 +61,11 @@ export default {
   watch: {
     searchKey(val) {
       this.debouncedSearch(val)
+    },
+    activeIndex() {
+      this.$nextTick(() => {
+        this.scrollActiveIntoView()
+      })
     }
   },
   created() {
@@ -68,6 +73,13 @@ export default {
   },
   mounted() {
     this._onKeydown = (e) => {
+      if (!this.showDialog) {
+        return
+      }
+      const navigatingList = (e.key === 'ArrowUp' || e.key === 'ArrowDown') && this.searchList.length > 0
+      if (navigatingList) {
+        e.preventDefault()
+      }
       if (e.key === 'Enter') {
         this.handleRedirect()
       } else if (e.key === 'ArrowUp') {
@@ -164,6 +176,18 @@ export default {
     handleMouseenter(index) {
       this.activeIndex = Number(index)
     },
+    /** 键盘/高亮切换时让当前项在列表滚动区内可见 */
+    scrollActiveIntoView() {
+      if (this.activeIndex < 0 || !this.searchList.length) {
+        return
+      }
+      const items = this.$refs.searchItem
+      const el = Array.isArray(items) ? items[this.activeIndex] : items
+      if (!el || typeof el.scrollIntoView !== 'function') {
+        return
+      }
+      el.scrollIntoView({ block: 'nearest', behavior: 'auto', inline: 'nearest' })
+    },
     handleUp() {
       if (!this.searchList.length) {
         return
@@ -223,6 +247,10 @@ export default {
 
 .search-list {
   margin-top: 15px;
+  max-height: min(50vh, 480px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-right: 4px;
 
   .search-item {
     height: 54px;
