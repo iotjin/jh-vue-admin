@@ -5,8 +5,20 @@
         <i class="el-icon-search nav-search-trigger" />
       </div>
     </el-tooltip>
-    <el-dialog :visible.sync="showDialog" append-to-body top="10vh" title="" custom-class="nav-search-dialog" min-height="200px" width="750px" :show-close="false" close-on-press-escape @closed="reset">
-      <el-input v-model="searchKey" placeholder="输入菜单名称搜索" size="large" clearable prefix-icon="el-icon-search" />
+    <el-dialog
+      :visible.sync="showDialog"
+      append-to-body
+      top="10vh"
+      title=""
+      custom-class="nav-search-dialog"
+      min-height="200px"
+      width="750px"
+      :show-close="false"
+      close-on-press-escape
+      @opened="focusSearchInput"
+      @closed="reset"
+    >
+      <el-input ref="searchInputRef" v-model="searchKey" placeholder="输入菜单名称搜索" size="large" clearable prefix-icon="el-icon-search" />
 
       <div v-if="searchList.length > 0" class="search-list">
         <div v-for="(item, index) in searchList" :key="'nav-search-' + index" ref="searchItem" class="search-item item-center" :class="{ active: index === activeIndex }" @click="handleRedirect" @mouseenter="handleMouseenter(index)">
@@ -97,6 +109,14 @@ export default {
     }
   },
   methods: {
+    focusSearchInput() {
+      this.$nextTick(() => {
+        const input = this.$refs.searchInputRef
+        if (input && typeof input.focus === 'function') {
+          input.focus()
+        }
+      })
+    },
     /** 与 Sidebar/Item.vue 一致：含 el-icon 用字体图标，否则走 svg-icon */
     isElIcon(icon) {
       return icon && String(icon).indexOf('el-icon') !== -1
