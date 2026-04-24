@@ -100,13 +100,25 @@ const tableRouter = {
       path: 'table15',
       component: () => import('@/views/demos/tables/table15'),
       name: 'table15',
-      meta: { title: 'table15 - 列隐藏/排序' }
+      meta: { title: 'table15 - 列隐藏/排序 (弹框/popover组件版)' }
     },
     {
       path: 'table16',
       component: () => import('@/views/demos/tables/table16'),
       name: 'table16',
-      meta: { title: 'table16' }
+      meta: { title: 'table16 - 列隐藏/排序 (弹框指令版)' }
+    },
+    {
+      path: 'table17',
+      component: () => import('@/views/demos/tables/table17'),
+      name: 'table17',
+      meta: { title: 'table17 - 列隐藏/排序 (popover指令版)' }
+    },
+    {
+      path: 'table18',
+      component: () => import('@/views/demos/tables/table18'),
+      name: 'table18',
+      meta: { title: 'table18' }
     }
 
   ]
