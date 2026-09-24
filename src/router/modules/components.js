@@ -17,6 +17,12 @@ const componentsRouter = {
       meta: { title: 'Base Dialog' }
     },
     {
+      path: 'newBaseDialog',
+      component: () => import('@/views/demos/components/newDialog'),
+      name: 'newBaseDialog',
+      meta: { title: 'New Base Dialog' }
+    },
+    {
       path: 'excelUpload',
       component: () => import('@/views/demos/components/excelUpload'),
       name: 'excelUpload',

@@ -23,7 +23,8 @@ import constant from '@/common/const'
 import { deepCopy } from '@/common/commonUtils'
 // 引入全局组件
 import BaseTree from '@/views/components/base-tree'
-import BaseDialog from '@/views/components/base-dialog'
+import BaseDialog from '@/components/BaseDialog'
+// import BaseDialog from '@/views/components/base-dialog'
 // 自定义指令
 import { setupDirective } from '@/directives/index'
 

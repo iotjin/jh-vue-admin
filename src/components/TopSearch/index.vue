@@ -199,10 +199,10 @@ export default {
      * 当前视口是否为移动端（宽度 < 1024px）
      */
     isMobileScreen() {
-      if (typeof document === 'undefined') {
+      if (typeof window === 'undefined') {
         return false
       }
-      return document.body.getBoundingClientRect().width < MOBILE_WIDTH
+      return window.innerWidth < MOBILE_WIDTH
     },
     /**
      * 设置展开状态：外部控制时抛出 update:isExpand，否则写内部状态并缓存

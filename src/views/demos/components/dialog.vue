@@ -84,12 +84,15 @@
 
 <script>
 // import { getDeptList, getStationTree } from '@/api/base/base'
+import BaseDialog from '@/views/components/base-dialog'
 import { getDictLevel } from '@/api/tables/tables'
 import * as checkUtils from '@/utils/checkUtils'
 import { REGEX_phone } from '@/utils/checkUtils'
 
 export default {
-  components: {},
+  components: {
+    BaseDialog
+  },
   data() {
     return {
       isfull: false,
